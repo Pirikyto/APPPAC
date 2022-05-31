@@ -1,10 +1,13 @@
 import axios from "axios";
+import { Cookies } from "quasar";
 export { posts, gets };
 
 const api = axios.create({
   timeout: 10000,
-  params: { withCredentials: true, outputType: "json" },
+  params: { outputType: "json" },
 });
+const $q = api.use;
+console.log($q.Cookies());
 //Definição dos metodos para utilização da APIs em sistema Sankhya!!
 //Metodo Post
 const posts = async (req, res) => {
@@ -31,8 +34,7 @@ const posts = async (req, res) => {
 const gets = async (req, res) => {
   api.defaults.params["serviceName"] = req.serviceName;
   api.defaults.params["mgeSession"] = req.Cookie;
-  api.defaults.headers["Cookie"] = req.Cookie;
-  console.log(api.defaults.headers);
+
   //res = await
   api
     .get("/api", req)
