@@ -1,0 +1,40 @@
+{
+  "login": {
+    "serviceName": "MobileLoginSP.login",
+    "requestBody": {
+      "NOMUSU": {
+        "$": "US001"
+      },
+      "INTERNO": {
+        "$": "123456"
+      },
+      "KEEPCONNECTED": {
+        "$": "S"
+      }
+    }
+  },
+  "pedido": {
+    "serviceName": "CRUDServiceProvider.loadRecords",
+    "requestBody": {
+      "dataSet": {
+        "rootEntity": "CabecalhoNota",
+        "includePresentationFields": "S",
+        "offsetPage": "0",
+        "criteria": {
+          "expression": {
+            "$": "(this.DTNEG = ? )"
+          },
+          "parameter": {
+            "$": "28/10/2016",
+            "type": "D"
+          }
+        },
+        "entity": {
+          "fieldset": {
+            "list": "NUNOTA,CODEMP,CODPARC,DTNEG"
+          }
+        }
+      }
+    }
+  }
+}
