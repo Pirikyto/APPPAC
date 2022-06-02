@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Cookies } from "quasar";
 export { posts, gets };
 
 const api = axios.create({
@@ -30,17 +31,19 @@ const posts = async (req, res) => {
   return res;
 };
 
-const gets = async (req, res) => {
+const gets = async (req, res, token) => {
+  const cookies = Cookies.set("JSESSIONID", token);
+  console.log(cookies);
   api.defaults.params["serviceName"] = req.serviceName;
   api.defaults.params["mgeSession"] = req.Cookie;
-  //api.defaults.headers.common["Cookie"] = req.Cookie;
-  console.log(api.defaults);
+  //console.log(api.defaults);
   //res = await
   api
-    .get("/api", req)
+    .post("/api", req)
     .then((response) => {
-      console.log(response.data);
-      console.log("aki");
+      //console.log(req);
+      //console.log(response.data);
+      //console.log("aki");
       //res = response.data;
     })
     .catch((error) => {

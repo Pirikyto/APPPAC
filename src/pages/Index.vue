@@ -41,11 +41,11 @@ export default {
         this.login = await posts(req1, res);
         //console.log(this.login);
 
-        this.data.pedido.Cookie = this.login.responseBody.jsessionid.$;
+        const token = this.login.responseBody.jsessionid.$;
         //console.log(this.data.pedido.Cookie);
         //Metodo Get
         const req = this.data.pedido;
-        const dados = await gets(req, res);
+        const dados = await gets(req, res, token);
         //console.log(dados);
       }
     },
