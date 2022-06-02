@@ -85,6 +85,7 @@ module.exports = configure(function (ctx) {
         "/api": {
           target: "http://144.22.106.232:8380",
           changeOrigin: true,
+          withCredentials: true,
           pathRewrite: {
             "^/api": "/mge/service.sbr",
           },
