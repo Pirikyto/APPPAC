@@ -1,10 +1,11 @@
 <template>
   <q-page>
-    <div class="q-pa-md">abc</div>
+    <div class="q-pa-md"></div>
   </q-page>
 </template>
 <script>
 import { posts, gets } from "../services/api";
+import { ref } from "vue";
 export default {
   name: "IndexPage",
   //Variaveis de dados
@@ -20,11 +21,27 @@ export default {
     };
   },
 
+  setup() {
+    return {
+      separator: ref("vertical"),
+      columns: [
+        {
+          name: `f0.$`,
+          label: `id_post`,
+          field: `f0.$`,
+          align: "left",
+          sortable: true,
+        },
+      ],
+      rows: [],
+    };
+  },
+
   //Metodos da aplicação
   methods: {
     async main() {
       const requ = location.pathname;
-      const res = {};
+      const res = [];
       //const dados = {};
       //JSON da Api
 
@@ -33,20 +50,16 @@ export default {
         //Metodo Post
         const req1 = this.data.login;
         this.login = await posts(req1, res);
-        console.log(this.login);
-        this.data.pedido.Cookie = this.login.responseBody.jsessionid.$;
-        console.log(this.data.pedido.Cookie);
       } else if (requ == "/pedido") {
         const req1 = this.data.login;
         this.login = await posts(req1, res);
-        //console.log(this.login);
-
         const token = this.login.responseBody.jsessionid.$;
-        //console.log(this.data.pedido.Cookie);
-        //Metodo Get
         const req = this.data.pedido;
         const dados = await gets(req, res, token);
-        //console.log(dados);
+        console.log(dados.responseBody.entities.entity);
+        //this.setup.rows = dados.responseBody.entities.entity;
+        this.rows = dados.responseBody.entities.entity;
+        console.log(this.rows);
       }
     },
   },

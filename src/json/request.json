@@ -22,7 +22,7 @@
         "offsetPage": "0",
         "criteria": {
           "expression": {
-            "$": "(this.DTNEG = 01/01/2022 )"
+            "$": "(this.DTNEG = 02/01/2022 )"
           },
           "parameter": {
             "$": "28/10/2016",

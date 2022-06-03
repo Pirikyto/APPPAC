@@ -16,7 +16,7 @@ const posts = async (req, res) => {
     //Para Utilização do metodo Post a Requisição sempre feita em URL/api devido ao proxy configurado no quasar.config(nunca utilizar na apliacação)
     .post("/api", req)
     .then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
       res = response.data;
     })
     .catch((error) => {
@@ -32,23 +32,17 @@ const posts = async (req, res) => {
 };
 
 const gets = async (req, res, token) => {
-  const cookies = Cookies.set("JSESSIONID", token);
-  console.log(cookies);
+  Cookies.set("JSESSIONID", token);
   api.defaults.params["serviceName"] = req.serviceName;
   api.defaults.params["mgeSession"] = req.Cookie;
-  //console.log(api.defaults);
-  //res = await
-  api
+  res = await api
     .post("/api", req)
     .then((response) => {
-      //console.log(req);
-      //console.log(response.data);
-      //console.log("aki");
-      //res = response.data;
+      res = response.data;
     })
     .catch((error) => {
       // handle error
-      console.log(error);
+      //console.log(error);
       res = error.data;
     })
     .then(() => {
@@ -56,5 +50,5 @@ const gets = async (req, res, token) => {
       return res;
     });
   //console.log(res);
-  //return res;
+  return res;
 };
