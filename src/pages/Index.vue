@@ -34,7 +34,7 @@ export default {
         this.login = await posts(log, res);
       } else if (path == "/pedido") {
         const log = this.data.login;
-        this.login = await posts(log, res);
+        this.login = await login(log, res);
         const token = this.login.responseBody.jsessionid.$;
         const req = this.data.pedido;
         const dados = await gets(req, res, token);
