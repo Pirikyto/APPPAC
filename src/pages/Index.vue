@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="q-pa-md">
-      <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" />
+      <q-table title="Treats" :rows="rows" :columns="columns" />
     </div>
   </q-page>
 </template>
@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       dado: [],
+      rows: [],
       columns: [
         {
           name: "f0",
@@ -28,7 +29,6 @@ export default {
           sortable: true,
         },
       ],
-      rows: [],
     };
   },
   login() {
@@ -57,48 +57,19 @@ export default {
 
         const entity = dados.responseBody.entities.entity;
         const field = dados.responseBody.entities.metadata.fields.field;
-        //console.log(entity);
-        //console.log(field);
-        // entity.map((res, index) => {
-        //   //const aux = entity[index];
-        //   console.log(res, field[index]);
-        // });
 
-        // field.map((f0) => {
-        //   //console.log(f0);
-        // });
-        // entity.forEach((res, index, array) => {
-        //   console.log(res, index);
-        // });
         const novoArray = [];
-        // console.log(novoArray);
-        for (var i = 0; i < entity.length; i++) {
-          //console.log(i);
-          var obj = entity[i];
-          var e = 0;
-          var str = "";
-          for (var key in obj) {
-            //console.log(field[e].name);
-            //console.log(obj[key]);
 
-            //obj[key] = JSON.stringify(obj[key].$).replace(/[^a-z0-9/]/gi, "");
-            str =
-              str +
-              JSON.stringify(field[e].name).replace(/[^a-z0-9/]/gi, "") +
-              ":" +
-              JSON.stringify(obj[key].$).replace(/[^a-z0-9/]/gi, "") +
-              ", ";
-            //console.log(str);
-            e++;
+        for (var i = 0; i < entity.length; i++) {
+          var obj = entity[i];
+          for (var key in obj) {
+            obj[key] = JSON.stringify(obj[key].$).replace(/[^a-z0-9/]/gi, "");
           }
-          novoArray.push(JSON.parse("{" + str + "}"));
-          console.log(novoArray);
-          //console.log(obj);
+
+          console.log(entity);
           entity[i] = obj;
-          //console.log(entity);
+          console.log(entity);
         }
-        //this.rows = entity;
-        console.log(this.rows);
       }
     },
   },
@@ -107,7 +78,7 @@ export default {
   async beforeMount() {
     this.data = require("../json/request.json");
     await this.main();
-    //console.log(this.rows);
+    console.log(JSON.stringify(this.rows));
   },
 };
 </script>
