@@ -19,12 +19,14 @@ export default {
         {
           name: "f0",
           label: "f0",
+          field: "f0",
           align: "left",
           sortable: true,
         },
         {
           name: "f1",
           label: "f1",
+          field: "f1",
           align: "left",
           sortable: true,
         },
@@ -57,9 +59,6 @@ export default {
 
         const entity = dados.responseBody.entities.entity;
         const field = dados.responseBody.entities.metadata.fields.field;
-
-        const novoArray = [];
-
         for (var i = 0; i < entity.length; i++) {
           var obj = entity[i];
           for (var key in obj) {
