@@ -15,22 +15,7 @@ export default {
     return {
       dado: [],
       rows: [],
-      columns: [
-        {
-          name: "f0",
-          label: "f0",
-          field: "f0",
-          align: "left",
-          sortable: true,
-        },
-        {
-          name: "f1",
-          label: "f1",
-          field: "f1",
-          align: "left",
-          sortable: true,
-        },
-      ],
+      columns: [],
     };
   },
   login() {
@@ -55,19 +40,31 @@ export default {
         const dados = await gets(req, res, token);
         //console.log(dados.responseBody.entities.entity);
         this.rows = dados.responseBody.entities.entity;
-        //console.log(this.rows);
-
         const entity = dados.responseBody.entities.entity;
         const field = dados.responseBody.entities.metadata.fields.field;
+        //console.log(field);
+        for (var i = 0; i < field.length; i++) {
+          const json =
+            '{"name":' +
+            JSON.stringify(field[i].name) +
+            ', "label":' +
+            JSON.stringify(field[i].name) +
+            ',"field":"f' +
+            i +
+            '"}';
+          console.log(json);
+          const obj = JSON.parse(json);
+          console.log(obj);
+          field[i] = obj;
+        }
+        this.columns = field;
+        console.log(field);
         for (var i = 0; i < entity.length; i++) {
           var obj = entity[i];
           for (var key in obj) {
             obj[key] = JSON.stringify(obj[key].$).replace(/[^a-z0-9/]/gi, "");
           }
-
-          console.log(entity);
           entity[i] = obj;
-          console.log(entity);
         }
       }
     },
@@ -77,7 +74,6 @@ export default {
   async beforeMount() {
     this.data = require("../json/request.json");
     await this.main();
-    console.log(JSON.stringify(this.rows));
   },
 };
 </script>
