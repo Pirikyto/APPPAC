@@ -30,9 +30,9 @@
 </template>
 <script>
 import { defineComponent, ref } from "vue";
-import useAuthUser from "../services/useAuthUser";
-import useNotify from "../services/useNotify";
 import { useRouter } from "vue-router";
+import useNotify from "../services/useNotify";
+import useAuthUser from "../services/useAuthUser";
 
 export default defineComponent({
   name: "PageLogin",
@@ -47,11 +47,6 @@ export default defineComponent({
       login: "",
       password: "",
     });
-    onMounted(() => {
-      if (isLoggedIn) {
-        router.push({ name: "me" });
-      }
-    });
 
     const handleLogin = async () => {
       req.requestBody.INTERNO.$ = form.value.password;
@@ -60,7 +55,7 @@ export default defineComponent({
         const res = await login(req);
         if (res.status == 1) {
           notifySuccess("Login successfully!");
-          //router.push({ name: "me" });
+          router.push({ name: "me" });
         } else {
           notifyError(res.statusMessage);
         }
