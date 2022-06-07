@@ -31,6 +31,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import useAuthUser from "../services/useAuthUser";
+import useNotify from "../services/useNotify";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -41,19 +42,24 @@ export default defineComponent({
       login: "",
       password: "",
     });
-    const router = useRouter();
+    const { notifyError, notifySuccess } = useNotify();
     const { login } = useAuthUser();
-    const res = [];
     const json = require("../json/request.json");
     const req = json.login;
-    req.requestBody.INTERNO.$ = form.value.password;
-    req.requestBody.NOMUSU.$ = form.value.login;
+
     const handleLogin = async () => {
+      req.requestBody.INTERNO.$ = form.value.password;
+      req.requestBody.NOMUSU.$ = form.value.login;
       try {
-        await login(req, res);
-        notifySuccess("Login successfully!");
+        const res = await login(req);
+        console.log(res);
+        if (res.status == 1) {
+          notifySuccess("Login successfully!");
+        } else {
+          notifyError(res.statusMessage);
+        }
       } catch (error) {
-        console.log(error.message);
+        notifyError(error.message);
       }
     };
     return { form, handleLogin };

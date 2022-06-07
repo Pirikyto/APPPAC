@@ -3,10 +3,10 @@
     "serviceName": "MobileLoginSP.login",
     "requestBody": {
       "NOMUSU": {
-        "$": "US001"
+        "$": "ti004"
       },
       "INTERNO": {
-        "$": "123456"
+        "$": "150487"
       },
       "KEEPCONNECTED": {
         "$": "S"
