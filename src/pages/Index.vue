@@ -6,7 +6,7 @@
   </q-page>
 </template>
 <script>
-import { posts, gets } from "../services/api";
+import { posts, gets } from "../services/useApi";
 export default {
   name: "IndexPage",
   //Variaveis de dados
