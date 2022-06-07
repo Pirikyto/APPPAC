@@ -13,6 +13,7 @@ const routes = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
+    //("components/EssentialLink.vue"),
     children: [
       {
         path: "me",
