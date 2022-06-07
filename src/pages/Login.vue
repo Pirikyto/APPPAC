@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-form class="row justify-center" @submit.prevent="handleLogin">
-      <p class="col-12 text-h5 text-center">login</p>
+      <p class="col-12 text-h5 text-center">Login</p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input label="Usuário" v-model="form.login" />
         <q-input label="Senha" v-model="form.password" />
@@ -38,23 +38,29 @@ export default defineComponent({
   name: "PageLogin",
 
   setup() {
+    const router = useRouter();
+    const { notifyError, notifySuccess } = useNotify();
+    const { login, isLoggedIn } = useAuthUser();
+    const json = require("../json/request.json");
+    const req = json.login;
     const form = ref({
       login: "",
       password: "",
     });
-    const { notifyError, notifySuccess } = useNotify();
-    const { login } = useAuthUser();
-    const json = require("../json/request.json");
-    const req = json.login;
+    onMounted(() => {
+      if (isLoggedIn) {
+        router.push({ name: "me" });
+      }
+    });
 
     const handleLogin = async () => {
       req.requestBody.INTERNO.$ = form.value.password;
       req.requestBody.NOMUSU.$ = form.value.login;
       try {
         const res = await login(req);
-        console.log(res);
         if (res.status == 1) {
           notifySuccess("Login successfully!");
+          //router.push({ name: "me" });
         } else {
           notifyError(res.statusMessage);
         }
