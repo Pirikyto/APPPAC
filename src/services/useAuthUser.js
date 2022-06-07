@@ -34,7 +34,7 @@ export default function useAuthUser() {
   };
   const isLoggedIn = () => {
     console.log(!!res.status);
-    //return !!res.status;
+    return !!res.status;
   };
   return { login, isLoggedIn };
 }
