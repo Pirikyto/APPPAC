@@ -15,9 +15,6 @@ export default function useAuthUser() {
       .post("/api", req)
       .then((response) => {
         res = response.data;
-
-        //console.log(res.responseBody.jsessionid.$);
-        //)
       })
       .catch((error) => {
         res = error.data;
