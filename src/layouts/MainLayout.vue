@@ -2,7 +2,7 @@
   <q-layout view="hHh lpr fFf">
     <q-header reveal bordered class="bg-primary text-white">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left" />
+        <!-- <q-btn dense flat round icon="menu" @click="left = !left" /> -->
 
         <q-toolbar-title>
           <q-avatar>
@@ -15,9 +15,31 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="left" side="left" elevated>
-      <!-- drawer content -->
-      <q-scroll-area class="fit">
+    <!-- <q-drawer show-if-above v-model="left" side="left" elevated>
+       drawer content
+    </q-drawer> -->
+
+    <q-drawer show-if-above v-model="right" side="right" elevated>
+      <q-img
+        class="absolute-top"
+        src="https://cdn.quasar.dev/img/material.png"
+        style="height: 150px"
+      >
+        <div class="absolute-bottom bg-transparent">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          </q-avatar>
+          <div class="text-weight-bold">Razvan Stoenescu</div>
+          <div>@rstoenescu</div>
+        </div>
+      </q-img>
+      <q-scroll-area
+        style="
+          height: calc(100% - 150px);
+          margin-top: 150px;
+          border-right: 1px solid #ddd;
+        "
+      >
         <q-list>
           <template v-for="(menuItem, index) in menuList" :key="index">
             <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
@@ -36,65 +58,6 @@
         </q-list>
       </q-scroll-area>
     </q-drawer>
-
-    <q-drawer show-if-above v-model="right" side="right" elevated>
-      <q-scroll-area
-        style="
-          height: calc(100% - 150px);
-          margin-top: 150px;
-          border-right: 1px solid #ddd;
-        "
-      >
-        <q-list padding>
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="inbox"></q-icon>
-            </q-item-section>
-
-            <q-item-section> Correio </q-item-section>
-          </q-item>
-
-          <q-item active clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="star"></q-icon>
-            </q-item-section>
-
-            <q-item-section> Estrela </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="send"></q-icon>
-            </q-item-section>
-
-            <q-item-section> Enviar </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="drafts"></q-icon>
-            </q-item-section>
-
-            <q-item-section> Menssagns </q-item-section>
-          </q-item>
-        </q-list>
-      </q-scroll-area>
-
-      <q-img
-        class="absolute-top"
-        src="https://cdn.quasar.dev/img/material.png"
-        style="height: 150px"
-      >
-        <div class="absolute-bottom bg-transparent">
-          <q-avatar size="56px" class="q-mb-sm">
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-          </q-avatar>
-          <div class="text-weight-bold">Razvan Stoenescu</div>
-          <div>@rstoenescu</div>
-        </div>
-      </q-img>
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>

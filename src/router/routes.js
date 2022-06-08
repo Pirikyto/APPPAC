@@ -13,7 +13,6 @@ const routes = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
-    //("components/EssentialLink.vue"),
     children: [
       {
         path: "me",
@@ -32,7 +31,7 @@ const routes = [
       {
         path: "/:catchAll(.*)*",
         name: "/:catchAll(.*)*",
-        component: () => import("src/pages/Index.vue"),
+        component: () => import("src/pages/ErrorNotFound.vue"),
       },
     ],
   },

@@ -13,6 +13,26 @@
       }
     }
   },
+  "user": {
+    "serviceName": "CRUDServiceProvider.loadRecords",
+    "requestBody": {
+      "dataSet": {
+        "rootEntity": "Usuario",
+        "includePresentationFields": "N",
+        "offsetPage": "0",
+        "criteria": {
+          "expression": {
+            "$": "this.NOMEUSU = 'TI004'"
+          }
+        },
+        "entity": {
+          "fieldset": {
+            "list": "CODUSU,NOMEUSU,EMAIL"
+          }
+        }
+      }
+    }
+  },
   "pedido": {
     "serviceName": "CRUDServiceProvider.loadRecords",
     "requestBody": {
