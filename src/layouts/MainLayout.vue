@@ -41,7 +41,7 @@
             <q-item
               clickable
               :active="menuItem.label === link"
-              @click="(link = menuItem.label), inc"
+              @click="link = menuItem.label"
               v-ripple
             >
               <q-item-section avatar>
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { defineComponent, provide, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import useNotify from "../services/useNotify";
 import useApi from "../services/useApi";
@@ -261,13 +261,6 @@ export default defineComponent({
       },
       menuList,
       menuUser,
-      message: "hello!",
-    };
-  },
-  provide() {
-    // use function syntax so that we can access `this`
-    return {
-      message: this.message,
     };
   },
 });
