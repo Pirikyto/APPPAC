@@ -3,14 +3,12 @@
     <q-header reveal bordered class="bg-primary text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
-
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
           </q-avatar>
-          APP
+          <IndexPage />
         </q-toolbar-title>
-
         <q-btn dense flat round icon="account_circle" @click="right = !right" />
       </q-toolbar>
     </q-header>
@@ -43,7 +41,7 @@
             <q-item
               clickable
               :active="menuItem.label === link"
-              @click="link = menuItem.label"
+              @click="(link = menuItem.label), inc"
               v-ripple
             >
               <q-item-section avatar>
@@ -124,14 +122,13 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, provide, ref } from "vue";
 import { useRouter } from "vue-router";
 import useNotify from "../services/useNotify";
 import useApi from "../services/useApi";
 
 export default defineComponent({
   name: "MainLayout",
-
   data() {
     const menuUser = [
       {
@@ -234,7 +231,9 @@ export default defineComponent({
         separator: false,
       },
     ];
-    /*const { posts } = useApi();
+    /*
+    //dados do usuario falta implementar
+    const { posts } = useApi();
     const router = useRouter();
     const { notifyError, notifySuccess } = useNotify();
     const json = require("../json/request.json");
@@ -246,22 +245,29 @@ export default defineComponent({
     //console.log(res);
     //};
     //return { requestPost };*/
-
+    const miniState = ref(false);
+    const link = ref("Home");
     return {
       left: false,
       right: false,
       drawer: ref(false),
-      miniState: ref(false),
-      link: ref("Home"),
+      miniState,
+      link,
       drawerClick(e) {
         if (miniState.value) {
           miniState.value = false;
           e.stopPropagation();
         }
       },
-
       menuList,
       menuUser,
+      message: "hello!",
+    };
+  },
+  provide() {
+    // use function syntax so that we can access `this`
+    return {
+      message: this.message,
     };
   },
 });
