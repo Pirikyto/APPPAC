@@ -55,7 +55,7 @@ export default defineComponent({
         const res = await login(req);
         if (res.status == 1) {
           notifySuccess("Login successfully!");
-          router.push({ name: "me" });
+          router.push({ name: "home" });
         } else {
           notifyError(res.statusMessage);
         }
