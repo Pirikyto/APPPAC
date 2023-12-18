@@ -290,7 +290,7 @@ export default defineComponent({
     };
     const isEtiquetaExistente = (etiqueta) => {
       return seed.some((item) => {
-        console.log("Item.values[0]:", item.values);
+        console.log(etiqueta, item.values);
         return String(item.values[0]) === String(etiqueta);
       });
     };

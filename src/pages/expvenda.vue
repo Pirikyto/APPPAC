@@ -174,7 +174,9 @@ export default defineComponent({
     const disableNF = ref(false);
     const disableEtiqueta = ref(false);
     const parameter = [];
+    const parameters = [];
     const records = [];
+    const itens = [];
     const seed = [];
     const originalRows = [];
     const loading = ref(false);
@@ -206,8 +208,9 @@ export default defineComponent({
               },
             });
             req.requestBody.records = records;
-            const res = await handleMge(req);
 
+            req.requestBody.records = records;
+            const res = await handleMge(req);
             if (res.status == 1) {
               const req = json.salvarCabecalhoConferencia;
               params.unshift({
@@ -235,6 +238,29 @@ export default defineComponent({
             form.value.numConf = conf.responseBody.numConf;
             disableNF.value = true;
             disableEtiqueta.value = false;
+          }
+
+          const req = json.conferenciavendaitensnota;
+          parameters.unshift({
+            type: "N",
+            value: form.value.notafiscal,
+          });
+          req.requestBody.criteria.parameters = parameters;
+          const ress = await handleMge(req);
+          if (ress.status == 1) {
+            ress.responseBody.result.forEach(([chave], index) => {
+              itens.unshift({
+                values: {
+                  0: chave,
+                },
+              });
+              // Ou atribua o valor que você quiser aqui
+            });
+
+            console.log(itens);
+          } else {
+            notifyError(ress.statusMessage);
+            console.log(ress);
           }
         } else {
           notifyError(res.statusMessage);
@@ -265,47 +291,57 @@ export default defineComponent({
       } else {
         loading.value = true;
         let arr = form.value.etiqueta.split("*");
+        console.log(!isProdutoExistente(arr[1]));
         if (!isEtiquetaExistente(form.value.etiqueta)) {
           if (
             arr.length == 5 &&
             arr[0].length == 11 &&
-            arr[1].length == 4 &&
             arr[2].length == 6 &&
             arr[3].length == 2 &&
             arr[4].length == 10
           ) {
-            seed.unshift({
-              foreignKey: {
-                NUNOTA: form.value.notafiscal,
-              },
-              values: {
-                2: form.value.etiqueta,
-              },
-            });
-            originalRows.push({
-              name: form.value.etiqueta,
-              peso: parseInt(arr[2]) / 100,
-            });
-            setTimeout(() => {
-              if (rows.value.length === 0) {
-                rowCount.value = 0;
-                indexCount.value = 0;
-              }
-              if (parseInt(arr[2]) / 100 > 1) {
-                peso.value = peso.value + parseInt(arr[2]) / 100;
-                console.log(peso.value);
-              }
-              const index = indexCount.value,
-                row = originalRows[rowCount.value];
-              row.index = index;
-              ++rowCount.value;
-              ++indexCount.value;
-              const newRow = { ...row };
-              rows.value.unshift(newRow);
-              loading.value = false;
-            }, 500);
-            form.value.etiqueta = "";
-            input.value.focus();
+            if (isProdutoExistente(arr[1])) {
+              seed.unshift({
+                foreignKey: {
+                  NUNOTA: form.value.notafiscal,
+                },
+                values: {
+                  2: form.value.etiqueta,
+                },
+              });
+              originalRows.push({
+                name: form.value.etiqueta,
+                peso: parseInt(arr[2]) / 100,
+              });
+              setTimeout(() => {
+                if (rows.value.length === 0) {
+                  rowCount.value = 0;
+                  indexCount.value = 0;
+                }
+                if (parseInt(arr[2]) / 100 > 1) {
+                  peso.value = peso.value + parseInt(arr[2]) / 100;
+                  //console.log(peso.value);
+                }
+                const index = indexCount.value,
+                  row = originalRows[rowCount.value];
+                row.index = index;
+                ++rowCount.value;
+                ++indexCount.value;
+                const newRow = { ...row };
+                rows.value.unshift(newRow);
+                loading.value = false;
+              }, 500);
+              form.value.etiqueta = "";
+              input.value.focus();
+            } else {
+              var audio = new Audio("../media/error-1.mp3");
+              audio.addEventListener("canplaythrough", function () {
+                audio.play();
+              });
+              input.value.focus();
+              form.value.etiqueta = "";
+              notifyError("O produto conferido não existe no pedido/nota.");
+            }
           } else {
             var audio = new Audio("../media/error-1.mp3");
             audio.addEventListener("canplaythrough", function () {
@@ -339,10 +375,10 @@ export default defineComponent({
         }
         let arr = seed[val].values[0].split("*");
         if (parseInt(arr[2]) / 100 > 1) {
-          console.log(peso.value);
+          //console.log(peso.value);
           peso.value = peso.value - parseInt(arr[2]) / 100;
-          console.log(parseInt(arr[2]) / 100);
-          console.log(peso.value);
+          //console.log(parseInt(arr[2]) / 100);
+          //console.log(peso.value);
         }
         seed.splice(val, 1);
         rows.value.splice(val, 1);
@@ -354,7 +390,14 @@ export default defineComponent({
 
     const isEtiquetaExistente = (etiqueta) => {
       return seed.some((item) => {
-        console.log("Item.values[0]:", item.values);
+        //console.log(etiqueta, item.values);
+        return String(item.values[2]) === String(etiqueta);
+      });
+    };
+
+    const isProdutoExistente = (etiqueta) => {
+      return itens.some((item) => {
+        console.log(item.values);
         return String(item.values[0]) === String(etiqueta);
       });
     };

@@ -246,6 +246,19 @@
       }
     }
   },
+  "conferenciavendaitensnota": {
+    "serviceName": "DatasetSP.loadRecords",
+    "requestBody": {
+      "entityName": "ItemNota",
+      "standAlone": true,
+      "orderByExpression": "SEQUENCIA",
+      "fields": ["CODPROD"],
+      "criteria": {
+        "expression": "(this.SEQUENCIA > 0) AND  (NUNOTA = ?) ",
+        "parameters": []
+      }
+    }
+  },
   "conferenciavendalannota": {
     "serviceName": "DatasetSP.save",
     "requestBody": {
