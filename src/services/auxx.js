@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Cookies } from "quasar";
-export { login, posts };
+export { login, posts, gets };
 
 const api = axios.create({
   timeout: 10000,
@@ -37,6 +37,28 @@ const posts = async (req, res, token) => {
   api.defaults.params["mgeSession"] = req.Cookie;
   res = await api
     .post("/api", req)
+    .then((response) => {
+      res = response.data;
+    })
+    .catch((error) => {
+      // handle error
+      //console.log(error);
+      res = error.data;
+    })
+    .then(() => {
+      //console.log(res);
+      return res;
+    });
+  //console.log(res);
+  return res;
+};
+
+const gets = async (req, res, token) => {
+  Cookies.set("JSESSIONID", token);
+  api.defaults.params["serviceName"] = req.serviceName;
+  api.defaults.params["mgeSession"] = req.Cookie;
+  res = await api
+    .get("/api", req)
     .then((response) => {
       res = response.data;
     })

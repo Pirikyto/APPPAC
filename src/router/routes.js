@@ -17,7 +17,7 @@ const routes = [
       {
         path: "teste",
         name: "teste",
-        component: () => import("src/pages/Teste.vue"),
+        component: () => import("src/pages/teste.vue"),
       },
     ],
   },
@@ -28,12 +28,39 @@ const routes = [
       {
         path: "home",
         name: "home",
+        token: "",
         component: () => import("src/pages/Index.vue"),
       },
       {
-        path: "pac",
-        name: "pac",
-        component: () => import("src/pages/pac.vue"),
+        path: "exp",
+        name: "exp",
+        component: () => import("src/pages/expprod.vue"),
+      },
+      {
+        path: "pro",
+        name: "pro",
+        component: () => import("src/pages/prodconf.vue"),
+      },
+
+      {
+        path: "rec",
+        name: "rec",
+        component: () => import("src/pages/expreceb.vue"),
+      },
+      {
+        path: "ind",
+        name: "ind",
+        component: () => import("src/pages/indic.vue"),
+      },
+      {
+        path: "ven",
+        name: "ven",
+        component: () => import("src/pages/expvenda.vue"),
+      },
+      {
+        path: "cat",
+        name: "cat",
+        component: () => import("src/pages/ErrorNotFound.vue"),
       },
     ],
   },

@@ -1,10 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpr fFf">
+    <q-header reveal bordered class="bg-primary text-white">
       <q-toolbar>
-        <q-toolbar-title> New APP </q-toolbar-title>
-
-        <div>{{ $q.version }}</div>
+        <q-toolbar-title>
+          <IndexPage />
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "LoginLayout",
+  name: "MainLayout",
 });
 </script>

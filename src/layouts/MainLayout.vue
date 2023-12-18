@@ -4,9 +4,6 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
           <IndexPage />
         </q-toolbar-title>
         <q-btn dense flat round icon="account_circle" @click="right = !right" />
@@ -23,12 +20,7 @@
     >
       <!-- drawer content -->
       <!-- <q-item clickable v-ripple></q-item> -->
-      <q-img
-        class="absolute-top"
-        src="https://cdn.quasar.dev/img/material.png"
-        style="height: 75px"
-      >
-      </q-img>
+
       <q-scroll-area
         style="
           height: calc(100% - 75px);
@@ -81,9 +73,8 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">Razvan Stoenescu</div>
-          <div>@rstoenescu</div>
         </div>
+        <div class="text-weight-bold">Razvan Stoenescu</div>
       </q-img>
       <q-scroll-area
         style="
@@ -231,26 +222,15 @@ export default defineComponent({
         separator: false,
       },
     ];
-    /*
-    //dados do usuario falta implementar
-    const { posts } = useApi();
-    const router = useRouter();
-    const { notifyError, notifySuccess } = useNotify();
-    const json = require("../json/request.json");
-    const req = json.pedido;
-    //const requestPost = async () => {
-    //console.log(req);
-    //const res =
-    //posts(req);
-    //console.log(res);
-    //};
-    //return { requestPost };*/
-    const miniState = ref(false);
+    const miniState = ref(true);
     const link = ref("Home");
+    const left = ref(false);
+    const right = ref(false);
+    const drawer = ref(false);
     return {
-      left: false,
-      right: false,
-      drawer: ref(false),
+      left,
+      right,
+      drawer,
       miniState,
       link,
       drawerClick(e) {
@@ -262,6 +242,15 @@ export default defineComponent({
       menuList,
       menuUser,
     };
+  },
+  async BeforeMount() {
+    await this.getData();
+  },
+  methods: {
+    getData() {
+      this.link;
+      console.log(this.link);
+    },
   },
 });
 </script>

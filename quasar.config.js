@@ -83,12 +83,36 @@ module.exports = configure(function (ctx) {
       port: 8080,
       open: true, // opens browser window automatically
       proxy: {
-        "/api": {
-          target: "http://144.22.106.232:8380",
+        "/log": {
+          target: "https://api.sankhya.com.br",
           changeOrigin: true,
           withCredentials: true,
           pathRewrite: {
-            "^/api": "/mge/service.sbr",
+            "^/log": "/login",
+          },
+        },
+        "/api1": {
+          target: "https://api.sankhya.com.br",
+          changeOrigin: true,
+          withCredentials: true,
+          pathRewrite: {
+            "^/api1": "/gateway/v1/mge/service.sbr",
+          },
+        },
+        "/mge": {
+          target: "https://api.sankhya.com.br",
+          changeOrigin: true,
+          withCredentials: true,
+          pathRewrite: {
+            "^/mge": "/gateway/v1/mge/service.sbr",
+          },
+        },
+        "/com": {
+          target: "https://api.sankhya.com.br",
+          changeOrigin: true,
+          withCredentials: true,
+          pathRewrite: {
+            "^/com": "/gateway/v1/mgecom/service.sbr",
           },
         },
       },
@@ -196,6 +220,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
+      id: "com.empresa.NomeDoApp",
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-capacitor-apps/configuring-capacitor

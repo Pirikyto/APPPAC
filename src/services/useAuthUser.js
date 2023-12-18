@@ -2,7 +2,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { Cookies } from "quasar";
 
-const api = axios.create({
+const log = axios.create({
   timeout: 10000,
   params: { outputType: "json" },
 });
@@ -10,9 +10,10 @@ const api = axios.create({
 const user = ref(null);
 export default function useAuthUser() {
   const login = async (req, res) => {
-    api.defaults.params["serviceName"] = req.serviceName;
-    res = await api
-      .post("/api", req)
+    log.defaults["headers"] = req;
+
+    res = await log
+      .post("/log", "")
       .then((response) => {
         res = response.data;
       })
@@ -21,17 +22,13 @@ export default function useAuthUser() {
         console.log(error.data);
       })
       .then(() => {
-        if (res.status == 1) {
-          api.defaults.params["mgeSession"] = res.responseBody.jsessionid.$;
-          Cookies.set("JSESSIONID", res.responseBody.jsessionid.$);
+        if (res.error == null) {
+          log.defaults.params["Authorization"] = "Bearer" + res.bearerToken.$;
+          Cookies.set("Bearer", res.bearerToken.$);
         }
         return res;
       });
     return res;
   };
-  const isLoggedIn = () => {
-    console.log(!!res.status);
-    return !!res.status;
-  };
-  return { login, isLoggedIn };
+  return { login };
 }

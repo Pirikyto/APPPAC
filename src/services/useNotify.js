@@ -6,6 +6,7 @@ export default function useNotify() {
     $q.notify({
       type: "positive",
       message: message || "All right !",
+      position: "top",
     });
   };
 
@@ -13,6 +14,7 @@ export default function useNotify() {
     $q.notify({
       type: "negative",
       message: message || "Failed !",
+      position: "top",
     });
   };
 

@@ -47,18 +47,16 @@ export default defineComponent({
       login: "",
       password: "",
     });
-
     const handleLogin = async () => {
-      req.requestBody.INTERNO.$ = form.value.password;
-      req.requestBody.NOMUSU.$ = form.value.login;
       try {
         const res = await login(req);
-        if (res.status == 1) {
+        if (res.error == null) {
           notifySuccess("Login successfully!");
           router.push({ name: "home" });
         } else {
           notifyError(res.statusMessage);
         }
+        console.log(res);
       } catch (error) {
         notifyError(error.message);
       }

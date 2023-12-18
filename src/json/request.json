@@ -1,12 +1,18 @@
 {
   "login": {
+    "token": "1826dfde-0944-449b-8ade-2df7bc21931c",
+    "appkey": "f8dd0739-129d-4485-b80c-f3bc759c25ec",
+    "username": "fabio.camargo@frumar.com.br",
+    "password": "T1@frumar"
+  },
+  "loginOld": {
     "serviceName": "MobileLoginSP.login",
     "requestBody": {
       "NOMUSU": {
-        "$": "ti004"
+        "$": ""
       },
       "INTERNO": {
-        "$": "150487"
+        "$": ""
       },
       "KEEPCONNECTED": {
         "$": "S"
@@ -52,6 +58,427 @@
         "entity": {
           "fieldset": {
             "list": "NUNOTA,CODEMP,CODPARC,DTNEG"
+          }
+        }
+      }
+    }
+  },
+
+  "conferencia": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "entityName": "AD_ADCONFEXP",
+      "standAlone": false,
+      "fields": ["ETIQUETA"],
+      "records": [],
+      "ignoreListenerMethods": ""
+    }
+  },
+  "conferenciaprod": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "entityName": "AD_CONFPROD",
+      "standAlone": false,
+      "fields": ["ID", "IDIPROC"],
+      "records": [],
+      "ignoreListenerMethods": ""
+    }
+  },
+  "conferenciaprodetiq": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "dataSetID": "00S",
+      "entityName": "AD_ITECONFPROD",
+      "standAlone": false,
+      "fields": ["ETIQUETA", "ID"],
+      "records": [],
+      "ignoreListenerMethods": ""
+    }
+  },
+  "conferenciageretiq": {
+    "serviceName": "DatasetSP.loadRecords",
+    "requestBody": {
+      "dataSetID": "00E",
+      "entityName": "AD_ETIQUETA",
+      "standAlone": false,
+      "fields": ["CODINS", "NUNOTA"],
+      "tryJoinedFields": true,
+      "parallelLoader": true,
+      "criteria": {
+        "expression": "(this.NUNOTA = ?)",
+        "parameters": []
+      },
+      "txProperties": {
+        "ConfigToSaveAt:br.com.sankhya.menu.adicional.AD_ETIQUETA.DynamicFilterAccordion": "eyJwYXJhbSI6W3siaWQiOiJOVU5PVEEiLCIkIjoiMTUyOTQxMCJ9XX0="
+      },
+      "ignoreListenerMethods": "",
+      "useDefaultRowsLimit": true,
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "consultaNotaChave": {
+    "serviceName": "CRUDServiceProvider.loadRecords",
+    "requestBody": {
+      "dataSet": {
+        "rootEntity": "CabecalhoNota",
+        "includePresentationFields": "S",
+        "offsetPage": "0",
+        "criteria": {
+          "expression": {
+            "$": "(this.CHAVENFE = ? )"
+          },
+          "parameter": {}
+        },
+        "entity": {
+          "fieldset": {
+            "list": "NUNOTA"
+          }
+        }
+      }
+    }
+  },
+  "consultaproduto": {
+    "serviceName": "DatasetSP.loadRecords",
+    "requestBody": {
+      "dataSetID": "00T",
+      "entityName": "AD_DADOSET",
+      "standAlone": false,
+      "fields": [
+        "CODPROD",
+        "CODDADOSET",
+        "DTFAB",
+        "DTVAL",
+        "CODINS",
+        "Produto.DESCRPROD"
+      ],
+      "tryJoinedFields": true,
+      "parallelLoader": true,
+      "parentEntityName": "AD_ETIQUETA",
+      "criteria": {
+        "expression": " (CODINS = ?) ",
+        "parameters": []
+      },
+      "ignoreListenerMethods": "",
+      "useDefaultRowsLimit": true,
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "atualizafabricacao": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "dataSetID": "00T",
+      "entityName": "AD_DADOSET",
+      "standAlone": false,
+      "fields": [
+        "CODDADOSET",
+        "CODINS",
+        "CODPROD",
+        "Produto.DESCRPROD",
+        "CONTROLE",
+        "DTFAB",
+        "DTVAL"
+      ],
+      "records": [],
+      "ignoreListenerMethods": "",
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "atualizapeso": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "dataSetID": "019",
+      "entityName": "AD_DADOSITEM",
+      "standAlone": false,
+      "fields": ["CODDADOSET", "CODINS", "CODDADOSIT", "PESO", "IMPRESSO"],
+      "records": [],
+      "ignoreListenerMethods": "",
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "conferenciavendalocnota": {
+    "serviceName": "DatasetSP.loadRecords",
+    "requestBody": {
+      "dataSetID": "00E",
+      "entityName": "AD_CONFEXPED",
+      "standAlone": false,
+      "fields": ["NUNOTA"],
+      "tryJoinedFields": true,
+      "parallelLoader": true,
+      "criteria": {
+        "expression": "(this.NUNOTA = ?)",
+        "parameters": []
+      },
+      "txProperties": {
+        "ConfigToSaveAt:br.com.sankhya.menu.adicional.AD_CONFEXPED.DynamicFilterAccordion": "eyJwYXJhbSI6W3siaWQiOiJOVU5PVEEiLCIkIjoiMTYzMjE5OSJ9XX0="
+      },
+      "ignoreListenerMethods": "",
+      "useDefaultRowsLimit": true,
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "conferenciavendalannota": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "dataSetID": "00E",
+      "entityName": "AD_CONFEXPED",
+      "standAlone": false,
+      "fields": ["NUNOTA"],
+      "records": [],
+      "ignoreListenerMethods": "",
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "etiquetaConferenciaVenda": {
+    "serviceName": "DatasetSP.save",
+    "requestBody": {
+      "dataSetID": "00T",
+      "entityName": "AD_ITECONFEXPED",
+      "standAlone": false,
+      "fields": [
+        "NUNOTA",
+        "SEQUENCIA",
+        "ETIQUETA",
+        "CODCAIXA",
+        "CODPROD",
+        "Produto.DESCRPROD",
+        "QTDPROD",
+        "QTDCAIXA",
+        "LOTE",
+        "CONFERIDO"
+      ],
+      "records": [],
+      "ignoreListenerMethods": "",
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "salvarCabecalhoConferencia": {
+    "serviceName": "ConferenciaSP.salvarCabecalhoConferencia",
+    "requestBody": {
+      "params": {},
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "fila.conferencia.client.event.produtos.divergentes"
+          },
+          {
+            "$": "client.event.produtos.escolha.unidade.mov.armazenamento"
+          },
+          {
+            "$": "client.event.escolha.empresa.local.destino"
+          },
+          {
+            "$": "client.event.produtos.excluidos.conferencia"
+          },
+          {
+            "$": "client.event.volumes.produto.recontado"
+          },
+          {
+            "$": "br.com.sankhya.mgecom.busca.identificador.produto"
+          }
+        ]
+      }
+    }
+  },
+  "salvarItemConferido": {
+    "serviceName": "ConferenciaSP.salvarItemConferido",
+    "requestBody": {
+      "params": {
+        "numConf": "632103",
+        "nuNota": 1648349,
+        "codBarra": "3127",
+        "controle": "",
+        "qtdConf": "15.000000000",
+        "substituirProduto": true,
+        "volume": "",
+        "exigeIdentificadores": "N",
+        "codUMA": ""
+      },
+
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "fila.conferencia.client.event.produtos.divergentes"
+          },
+          {
+            "$": "client.event.produtos.escolha.unidade.mov.armazenamento"
+          },
+          {
+            "$": "client.event.escolha.empresa.local.destino"
+          },
+          {
+            "$": "client.event.produtos.excluidos.conferencia"
+          },
+          {
+            "$": "client.event.volumes.produto.recontado"
+          },
+          {
+            "$": "br.com.sankhya.mgecom.busca.identificador.produto"
+          },
+          {
+            "$": "conferencia.lista.produtos.divergentes"
+          },
+          {
+            "$": "client.event.escolha.etiqueta.peso"
+          }
+        ]
+      }
+    }
+  },
+  "impressao": {
+    "serviceName": "PrintServiceSP.saveSubstitutePrinter",
+    "requestBody": {
+      "substitutePrintersRequest": {
+        "substitutePrinters": {
+          "pendingPrinter": [
+            {
+              "printerUri": {
+                "$": "LOCAL:0/RECEPCAO"
+              },
+              "originalPrinterName": {
+                "$": "PRN_ETIQUETAS_PORTAL"
+              },
+              "printJobCount": {
+                "$": "1"
+              },
+              "docType": {
+                "$": "RELATORIO"
+              },
+              "docTypeDescription": {
+                "$": "Relatorio"
+              }
+            }
+          ]
+        },
+        "saveSubstitutePrinters": {
+          "$": "false"
+        },
+        "transactionId": {
+          "$": "24542D977D15AA52990CE217E73DD29F"
+        }
+      },
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "tranferencialocal": {
+    "serviceName": "CACSP.incluirNota",
+    "requestBody": {
+      "nota": {
+        "cabecalho": {
+          "NUNOTA": {},
+          "CODPARC": {
+            "$": "1"
+          },
+          "DTNEG": {
+            "$": "16/11/2023"
+          },
+          "CODTIPOPER": {
+            "$": "1400"
+          },
+          "CODTIPVENDA": {
+            "$": "0"
+          },
+          "CODVEND": {
+            "$": "0"
+          },
+          "CODEMP": {
+            "$": "3"
+          },
+          "TIPMOV": {
+            "$": "T"
+          }
+        },
+        "itens": {
+          "INFORMARPRECO": "True",
+          "item": [
+            {
+              "NUNOTA": {},
+              "CODPROD": {
+                "$": "8"
+              },
+              "QTDNEG": {
+                "$": "1"
+              },
+              "CODLOCALORIG": {
+                "$": "0"
+              },
+              "CODVOL": {
+                "$": "UN"
+              },
+              "PERCDESC": {
+                "$": "0"
+              },
+              "VLRUNIT": {
+                "$": "1.75"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "consultaEstoque": {
+    "serviceName": "CRUDServiceProvider.loadRecords",
+    "requestBody": {
+      "dataSet": {
+        "rootEntity": "Estoque",
+        "includePresentationFields": "S",
+        "offsetPage": "",
+        "criteria": {
+          "expression": {
+            "$": "this.CODEMP = 3 AND this.ESTOQUE > 0"
+          }
+        },
+        "entity": {
+          "fieldset": {
+            "list": "CODPROD,ESTOQUE"
           }
         }
       }
