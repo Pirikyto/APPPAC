@@ -1,0 +1,7 @@
+{
+  "appId": "com.capacitor.fabio.app",
+  "appName": "App Mobile",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}

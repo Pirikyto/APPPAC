@@ -70,7 +70,8 @@
             outline
             rounded
             ref="selectOption"
-            @click="handleConferencia"
+            Recebimento
+            @click="handleTune(true)"
           />
         </div>
       </div>
@@ -124,6 +125,43 @@
         </q-table>
       </div>
     </div>
+    <q-dialog v-model="imageDialogVisible">
+      <div>
+        <q-card class="q-pa-md">
+          <q-card-actions align="center">
+            <q-input
+              bottom-slots
+              v-model="form.volume"
+              label="Qtd. Valume"
+              lazy-rules
+              type="number"
+              outlined
+            >
+              <template v-slot:append>
+                <q-icon
+                  v-if="form.notafiscal !== ''"
+                  name="close"
+                  @click="form.notafiscal = ''"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-input>
+          </q-card-actions>
+          <q-card-actions align="center">
+            <q-btn
+              label="OK"
+              color="primary"
+              class="full-width"
+              outline
+              rounded
+              ref="selectOption"
+              Recebimento
+              @click="handleConferencia"
+            />
+          </q-card-actions>
+        </q-card>
+      </div>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -140,6 +178,7 @@ export default defineComponent({
       notafiscal: "",
       etiqueta: "",
       numConf: "",
+      volume: "",
     });
     const columns = [
       {
@@ -168,11 +207,12 @@ export default defineComponent({
       },
     ];
     const router = useRouter();
+    const imageDialogVisible = ref(false);
     const { notifyError, notifySuccess } = useNotify();
     const { mge, mgecom } = useApi();
     const json = require("../json/request.json");
     const disableNF = ref(false);
-    const disableEtiqueta = ref(false);
+    const disableEtiqueta = ref(true);
     const parameter = [];
     const parameters = [];
     const records = [];
@@ -220,6 +260,7 @@ export default defineComponent({
               req.requestBody.params = params;
               const conf = await handleMgecom(req);
               form.value.numConf = conf.responseBody.numConf;
+              console.log(form.value.numConf);
               notifySuccess("Incluido!");
               disableNF.value = true;
               disableEtiqueta.value = false;
@@ -236,6 +277,7 @@ export default defineComponent({
             req.requestBody.params = params;
             const conf = await handleMgecom(req);
             form.value.numConf = conf.responseBody.numConf;
+            console.log(form.value.numConf);
             disableNF.value = true;
             disableEtiqueta.value = false;
           }
@@ -426,7 +468,7 @@ export default defineComponent({
         const req = json.salvarItemConferido;
         req.requestBody.params = {
           numConf: form.value.numConf,
-          nuNota: 1648349,
+          nuNota: form.value.notafiscal,
           codBarra: obj.codBarra,
           controle: "",
           qtdConf: obj.qtdConf,
@@ -435,9 +477,29 @@ export default defineComponent({
           exigeIdentificadores: "N",
           codUMA: "",
         };
-        const teste = await handleMgecom(req);
-        console.log(teste);
+        await handleMgecom(req);
       }
+      const req = json.salvarVolumeSimplificado;
+      req.requestBody.params = {
+        numConf: form.value.numConf,
+        nuNota: form.value.notafiscal,
+        volume: form.value.volume,
+      };
+      await handleMgecom(req);
+      const reqc = json.cortar;
+      reqc.requestBody.params = {
+        nuNota: form.value.notafiscal,
+        peso: 0,
+        qtdVol: 0,
+      };
+      await handleMgecom(reqc);
+      const reqf = json.finalizarConferencia;
+      reqf.requestBody.params = {
+        nuConf: form.value.numConf,
+        peso: 0,
+        qtdVol: 0,
+      };
+      await handleMgecom(reqf);
     };
 
     const handleMgecom = async (req) => {
@@ -471,13 +533,21 @@ export default defineComponent({
         return res;
       }
     };
-
+    const handleTune = async (tune) => {
+      if (seed == "") {
+        notifyError("Sem Produtos");
+      } else {
+        imageDialogVisible.value = tune;
+      }
+    };
     return {
-      form,
       handleLeitura,
       handleConferencia,
       handleExclu,
       handleNunota,
+      handleTune,
+      form,
+      imageDialogVisible,
       disableNF,
       disableEtiqueta,
       peso,

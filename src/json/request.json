@@ -337,18 +337,110 @@
   "salvarItemConferido": {
     "serviceName": "ConferenciaSP.salvarItemConferido",
     "requestBody": {
-      "params": {
-        "numConf": "632103",
-        "nuNota": 1648349,
-        "codBarra": "3127",
-        "controle": "",
-        "qtdConf": "15.000000000",
-        "substituirProduto": true,
-        "volume": "",
-        "exigeIdentificadores": "N",
-        "codUMA": ""
-      },
+      "params": {},
 
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "fila.conferencia.client.event.produtos.divergentes"
+          },
+          {
+            "$": "client.event.produtos.escolha.unidade.mov.armazenamento"
+          },
+          {
+            "$": "client.event.escolha.empresa.local.destino"
+          },
+          {
+            "$": "client.event.produtos.excluidos.conferencia"
+          },
+          {
+            "$": "client.event.volumes.produto.recontado"
+          },
+          {
+            "$": "br.com.sankhya.mgecom.busca.identificador.produto"
+          },
+          {
+            "$": "conferencia.lista.produtos.divergentes"
+          },
+          {
+            "$": "client.event.escolha.etiqueta.peso"
+          }
+        ]
+      }
+    }
+  },
+  "salvarVolumeSimplificado": {
+    "serviceName": "ConferenciaSP.salvarVolumeSimplificado",
+    "requestBody": {
+      "params": {},
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "fila.conferencia.client.event.produtos.divergentes"
+          },
+          {
+            "$": "client.event.produtos.escolha.unidade.mov.armazenamento"
+          },
+          {
+            "$": "client.event.escolha.empresa.local.destino"
+          },
+          {
+            "$": "client.event.produtos.excluidos.conferencia"
+          },
+          {
+            "$": "client.event.volumes.produto.recontado"
+          },
+          {
+            "$": "br.com.sankhya.mgecom.busca.identificador.produto"
+          },
+          {
+            "$": "conferencia.lista.produtos.divergentes"
+          },
+          {
+            "$": "client.event.escolha.etiqueta.peso"
+          }
+        ]
+      }
+    }
+  },
+  "cortar": {
+    "serviceName": "ConferenciaSP.cortar",
+    "requestBody": {
+      "params": {},
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "fila.conferencia.client.event.produtos.divergentes"
+          },
+          {
+            "$": "client.event.produtos.escolha.unidade.mov.armazenamento"
+          },
+          {
+            "$": "client.event.escolha.empresa.local.destino"
+          },
+          {
+            "$": "client.event.produtos.excluidos.conferencia"
+          },
+          {
+            "$": "client.event.volumes.produto.recontado"
+          },
+          {
+            "$": "br.com.sankhya.mgecom.busca.identificador.produto"
+          },
+          {
+            "$": "conferencia.lista.produtos.divergentes"
+          },
+          {
+            "$": "client.event.escolha.etiqueta.peso"
+          }
+        ]
+      }
+    }
+  },
+  "finalizarConferencia": {
+    "serviceName": "ConferenciaSP.finalizarConferencia",
+    "requestBody": {
+      "params": {},
       "clientEventList": {
         "clientEvent": [
           {

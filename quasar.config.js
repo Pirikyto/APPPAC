@@ -91,12 +91,12 @@ module.exports = configure(function (ctx) {
             "^/log": "/login",
           },
         },
-        "/api1": {
+        "/api": {
           target: "https://api.sankhya.com.br",
           changeOrigin: true,
           withCredentials: true,
           pathRewrite: {
-            "^/api1": "/gateway/v1/mge/service.sbr",
+            "^/api": "/gateway/v1/mge/service.sbr",
           },
         },
         "/mge": {

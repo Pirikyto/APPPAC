@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">App Mobile</string>
+    <string name="title_activity_main">App Mobile</string>
+    <string name="package_name">com.capacitor.fabio.app</string>
+    <string name="custom_url_scheme">com.capacitor.fabio.app</string>
+</resources>
