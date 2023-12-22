@@ -1,5 +1,13 @@
 <template>
   <q-page padding>
+    <q-btn
+      round
+      dense
+      flat
+      icon="tune"
+      @click="handleImpressao"
+      type="submit"
+    />
     <q-form class="row justify-center" @submit.prevent="handleConferencia">
       <p class="col-12 text-h5 text-center">Fila de Conferencia</p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
@@ -501,7 +509,11 @@ export default defineComponent({
       };
       await handleMgecom(reqf);
     };
-
+    const handleImpressao = async () => {
+      const chave = json.impressao;
+      const nota = await handleMge(chave);
+      console.log(nota);
+    };
     const handleMgecom = async (req) => {
       try {
         const res = await mgecom(req);
@@ -546,6 +558,7 @@ export default defineComponent({
       handleExclu,
       handleNunota,
       handleTune,
+      handleImpressao,
       form,
       imageDialogVisible,
       disableNF,

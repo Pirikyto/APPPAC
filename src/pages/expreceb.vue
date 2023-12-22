@@ -218,18 +218,44 @@
 
     <q-dialog v-model="imageDialogVisible">
       <div>
-        <q-card class="q-pa-md q-dialog-plugin">
+        <q-card class="q-pa-md">
           <q-card-actions align="center">
-            <q-range
-              v-model="range"
-              markers
-              :min="0"
-              :max="20"
-              :left-label-value="range.min"
-              :right-label-value="range.max"
-              label-always
-              class="q-mt-xl"
-            />
+            <q-input
+              bottom-slots
+              v-model="range.min"
+              label="Inicial"
+              lazy-rules
+              type="number"
+              outlined
+            >
+              <template v-slot:append>
+                <q-icon
+                  v-if="range.min !== 0"
+                  name="close"
+                  @click="range.min = 0"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-input>
+            <q-input
+              bottom-slots
+              v-model="range.max"
+              label="Final"
+              lazy-rules
+              type="number"
+              outlined
+            >
+              <template v-slot:append>
+                <q-icon
+                  v-if="range.max !== 0"
+                  name="close"
+                  @click="range.max = 0"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-input>
+          </q-card-actions>
+          <q-card-actions align="center">
             <q-btn color="primary" label="OK" @click="handleTune(false)" />
           </q-card-actions>
         </q-card>
@@ -603,7 +629,7 @@ export default defineComponent({
       try {
         const res = await mge(req);
         if (res.status == 1) {
-          handleImpressao;
+          //handleImpressao;
           notifySuccess("Incluido!");
           router.push({ name: "home" });
           window.location.reload(false);

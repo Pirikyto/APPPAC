@@ -472,35 +472,22 @@
     }
   },
   "impressao": {
-    "serviceName": "PrintServiceSP.saveSubstitutePrinter",
+    "serviceName": "ActionButtonsSP.executeScript",
     "requestBody": {
-      "substitutePrintersRequest": {
-        "substitutePrinters": {
-          "pendingPrinter": [
+      "runScript": {
+        "actionID": "59",
+        "refreshType": "NONE",
+        "rows": {
+          "row": [
             {
-              "printerUri": {
-                "$": "LOCAL:0/RECEPCAO"
-              },
-              "originalPrinterName": {
-                "$": "PRN_ETIQUETAS_PORTAL"
-              },
-              "printJobCount": {
-                "$": "1"
-              },
-              "docType": {
-                "$": "RELATORIO"
-              },
-              "docTypeDescription": {
-                "$": "Relatorio"
-              }
+              "field": [
+                {
+                  "fieldName": "CODINS",
+                  "$": "69"
+                }
+              ]
             }
           ]
-        },
-        "saveSubstitutePrinters": {
-          "$": "false"
-        },
-        "transactionId": {
-          "$": "24542D977D15AA52990CE217E73DD29F"
         }
       },
       "clientEventList": {
