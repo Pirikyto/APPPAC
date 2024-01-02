@@ -10,6 +10,14 @@
         @click="handleTune(true)"
         type="submit"
       />
+      <q-btn
+        round
+        dense
+        flat
+        icon="tune"
+        @click="handleImpressao"
+        type="submit"
+      />
     </p>
     <q-form class="row justify-center" @submit.prevent="handleEtiqueta">
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
@@ -164,6 +172,7 @@
           rounded
           type="submit"
           ref="selectOption"
+          :disable="loadingEnv"
         />
       </div>
     </q-form>
@@ -323,6 +332,7 @@ export default defineComponent({
     const disableFAB = ref(true);
     const disableVAL = ref(true);
     const disableQTD = ref(true);
+    const loadingEnv = ref(true);
     const loading = ref(false);
     const rowCount = ref(0);
     const indexCount = ref(0);
@@ -413,6 +423,7 @@ export default defineComponent({
                         }, 500);
                         //console.log(options.value);
                         loading.value = false;
+                        loadingEnv.value = false;
                       } else {
                         notifyError(res.statusMessage);
                         console.log(res2);
@@ -623,16 +634,19 @@ export default defineComponent({
       }
     };
     const handleEtiqueta = async () => {
+      loadingEnv.value = true;
       const req = json.atualizapeso;
       req.requestBody.records = seed.reverse();
       console.log(req);
       try {
         const res = await mge(req);
         if (res.status == 1) {
-          //handleImpressao;
+          await handleImpressao();
           notifySuccess("Incluido!");
-          router.push({ name: "home" });
-          window.location.reload(false);
+          setTimeout(() => {
+            router.push({ name: "rec" });
+            window.location.reload(false);
+          }, 10000);
         } else {
           notifyError(res.statusMessage);
           console.log(res);
@@ -707,6 +721,38 @@ export default defineComponent({
         return form.value.notafiscal;
       }
     };
+
+    const handleImpressao = async () => {
+      const req = json.executeScript;
+      const nota = await handleMge(req);
+      req.requestBody.runScript.rows.row[0].field = {
+        fieldName: "CODINS",
+        $: CODINS,
+      };
+      console.log(req);
+      const req2 = json.saveSubstitutePrinter;
+      req2.requestBody.substitutePrintersRequest.transactionId = {
+        $: nota.transactionId,
+      };
+      const nota2 = await handleMge(req2);
+    };
+
+    const handleMge = async (req) => {
+      try {
+        const res = await mge(req);
+        if (res.status == 1) {
+          notifySuccess("Incluido!");
+          return res;
+        } else {
+          notifyError(res.statusMessage);
+          return res;
+        }
+      } catch (error) {
+        notifyError(error.message);
+        return res;
+      }
+    };
+
     return {
       form,
       model,
@@ -716,6 +762,7 @@ export default defineComponent({
       disableFAB,
       disableVAL,
       disableQTD,
+      loadingEnv,
       loading,
       columns,
       rows,
@@ -732,6 +779,7 @@ export default defineComponent({
       handleEtiqueta,
       handleExclu,
       handleTune,
+      handleImpressao,
     };
   },
 });

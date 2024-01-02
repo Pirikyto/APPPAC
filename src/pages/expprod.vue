@@ -29,7 +29,7 @@
             rounded
             ref="selectOption"
             @click="handleEtiqueta"
-            :disable="loading"
+            :disable="loadingEnv"
           />
         </div>
       </div>
@@ -124,6 +124,8 @@ export default defineComponent({
     const originalRows = [];
 
     const loading = ref(false);
+    const loadingEnv = ref(true);
+
     const filter = ref("");
     const rowCount = ref(0);
     let peso = ref(0);
@@ -141,6 +143,7 @@ export default defineComponent({
 
     const input = ref(null);
     const handleEtiqueta = async () => {
+      loadingEnv.value = true;
       req.requestBody.records = seed.reverse();
       //console.log(req.requestBody.records);
       try {
@@ -208,6 +211,7 @@ export default defineComponent({
             }, 500);
             input.value.focus();
             form.value.etiqueta = "";
+            loadingEnv.value = false;
           } else {
             var audio = new Audio("../media/error-1.mp3");
             audio.addEventListener("canplaythrough", function () {
@@ -273,6 +277,7 @@ export default defineComponent({
       columns,
       rows,
       loading,
+      loadingEnv,
       filter,
       rowCount,
       input,

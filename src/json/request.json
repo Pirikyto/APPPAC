@@ -471,7 +471,7 @@
       }
     }
   },
-  "impressao": {
+  "executeScript": {
     "serviceName": "ActionButtonsSP.executeScript",
     "requestBody": {
       "runScript": {
@@ -480,15 +480,49 @@
         "rows": {
           "row": [
             {
-              "field": [
-                {
-                  "fieldName": "CODINS",
-                  "$": "69"
-                }
-              ]
+              "field": []
             }
           ]
         }
+      },
+      "clientEventList": {
+        "clientEvent": [
+          {
+            "$": "br.com.sankhya.actionbutton.clientconfirm"
+          }
+        ]
+      }
+    }
+  },
+  "saveSubstitutePrinter": {
+    "serviceName": "PrintServiceSP.saveSubstitutePrinter",
+    "requestBody": {
+      "substitutePrintersRequest": {
+        "substitutePrinters": {
+          "pendingPrinter": [
+            {
+              "printerUri": {
+                "$": "localhost:9091/Datamax M-4206 Mark II (from PC1210)"
+              },
+              "originalPrinterName": {
+                "$": "PRN_ETIQUETAS_PORTAL"
+              },
+              "printJobCount": {
+                "$": "1"
+              },
+              "docType": {
+                "$": "RELATORIO"
+              },
+              "docTypeDescription": {
+                "$": "Relatorio"
+              }
+            }
+          ]
+        },
+        "saveSubstitutePrinters": {
+          "$": "false"
+        },
+        "transactionId": {}
       },
       "clientEventList": {
         "clientEvent": [

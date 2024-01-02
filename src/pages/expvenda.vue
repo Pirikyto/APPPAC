@@ -545,6 +545,7 @@ export default defineComponent({
         return res;
       }
     };
+    
     const handleTune = async (tune) => {
       if (seed == "") {
         notifyError("Sem Produtos");

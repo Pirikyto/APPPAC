@@ -32,6 +32,7 @@
             outline
             rounded
             ref="selectOption"
+            :disable="loadingEnv"
             @click="handleOP"
           />
         </div>
@@ -142,7 +143,9 @@ export default defineComponent({
     const indexCount = ref(0);
     const rows = ref([...originalRows]);
     const input = ref(null);
+    const loadingEnv = ref(true);
     const handleOP = async () => {
+      loadingEnv.value = true;
       const req = json.conferenciaprod;
       req.requestBody.records = [
         {
@@ -238,6 +241,7 @@ export default defineComponent({
             }, 500);
             input.value.focus();
             form.value.etiqueta = "";
+            loadingEnv.value = false;
           } else {
             var audio = new Audio("../media/error-1.mp3");
             audio.addEventListener("canplaythrough", function () {
@@ -306,6 +310,7 @@ export default defineComponent({
       filter,
       rowCount,
       input,
+      loadingEnv,
       selected: ref([]),
     };
   },
