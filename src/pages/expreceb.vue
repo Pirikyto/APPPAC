@@ -14,7 +14,7 @@
         round
         dense
         flat
-        icon="tune"
+        icon="print"
         @click="handleImpressao"
         type="submit"
       />
@@ -138,8 +138,7 @@
           bottom-slots
           v-model="form.qtd"
           label="Quantidade"
-          type="number"
-          lazy-rules
+          :type="typePeso"
           :disable="disableQTD"
           ref="input"
         >
@@ -324,6 +323,7 @@ export default defineComponent({
       qtd: "",
       nota: "",
     });
+    const typePeso = ref("number");
     const options = ref([]);
     const imageDialogVisible = ref(false);
     const router = useRouter();
@@ -588,6 +588,7 @@ export default defineComponent({
     };
 
     const handleQtd = async () => {
+      console.log(form.value.qtd);
       form.value.qtd = obterParteString(
         form.value.qtd,
         range.value.min,
@@ -641,11 +642,11 @@ export default defineComponent({
       try {
         const res = await mge(req);
         if (res.status == 1) {
-          await handleImpressao();
-          notifySuccess("Incluido!");
+          const imp = await handleImpressao();
+          notifySuccess("Impresso!");
           setTimeout(() => {
-            router.push({ name: "rec" });
-            window.location.reload(false);
+            // router.push({ name: "rec" });
+            // window.location.reload(false);
           }, 10000);
         } else {
           notifyError(res.statusMessage);
@@ -678,11 +679,18 @@ export default defineComponent({
       form.value.etiqueta = "";
     };
     const handleTune = async (tune) => {
-      imageDialogVisible.value = tune;
+      if (range.value.min > 0 || range.value.max > 0) {
+        typePeso.value = "text";
+        imageDialogVisible.value = tune;
+      } else {
+        typePeso.value = "number";
+        imageDialogVisible.value = tune;
+      }
     };
 
     const obterParteString = (string, inicio, fim) => {
-      // Certifique-se de que as posições são válidas
+      console.log(string);
+      string = string.replace(/[^\d.]/g, "0");
       if (inicio === 0 && fim === 0) {
         return string;
       }
@@ -690,7 +698,7 @@ export default defineComponent({
       // Certifique-se de que as posições são válidas
       if (inicio >= 0 && fim >= inicio && fim <= string.length) {
         const parteDaString = string.substring(inicio, fim);
-
+        parteDaString = parteDaString.replace(".", ",");
         // Tente converter a parte da string em número
         const numero = parseFloat(parteDaString);
 
@@ -756,6 +764,7 @@ export default defineComponent({
     return {
       form,
       model,
+      typePeso,
       options,
       disableNF,
       disablePRO,

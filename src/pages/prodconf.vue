@@ -90,7 +90,7 @@
   </q-page>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import useNotify from "../services/useNotify";
 import useApi from "../services/useApi";
@@ -99,7 +99,6 @@ export default defineComponent({
   name: "IndexPage",
 
   setup() {
-    //:icon="'remove'"
     const router = useRouter();
     const { notifyError, notifySuccess } = useNotify();
     const { mge } = useApi();
@@ -144,6 +143,25 @@ export default defineComponent({
     const rows = ref([...originalRows]);
     const input = ref(null);
     const loadingEnv = ref(true);
+    const barcode = ref([]);
+    const handleImpressao = async () => {
+      const chave = json.etiquetasproducao;
+      const ret = await handleMge(chave);
+      //barcode.value
+      //console.log(ret.responseBody.result);
+      const opt = ret.responseBody.result;
+      //console.log(opt);
+      for (const key in opt) {
+        if (Array.isArray(opt[key]) && opt[key].length > 0) {
+          barcode.value.push(opt[key][2]);
+        }
+      }
+      //console.log(barcode.value);
+    };
+    onMounted(() => {
+      handleImpressao();
+    });
+
     const handleOP = async () => {
       loadingEnv.value = true;
       const req = json.conferenciaprod;
@@ -200,12 +218,19 @@ export default defineComponent({
         loading.value = true;
 
         let arr = form.value.etiqueta.split("*");
-        console.log(isEtiquetaExistente(form.value.etiqueta));
-        if (!isEtiquetaExistente(form.value.etiqueta)) {
+        //console.log(!isEtiquetaExistente(form.value.etiqueta));
+        //P1652275050*1457*001144*00*0000051423
+        console.log(
+          !barcode.value.includes(form.value.etiqueta) &&
+            !isEtiquetaExistente(form.value.etiqueta)
+        );
+        if (
+          !barcode.value.includes(form.value.etiqueta) &&
+          !isEtiquetaExistente(form.value.etiqueta)
+        ) {
           if (
             arr.length == 5 &&
             arr[0].length == 11 &&
-            arr[1].length == 4 &&
             arr[2].length == 6 &&
             arr[3].length == 2 &&
             arr[4].length == 10
@@ -294,9 +319,23 @@ export default defineComponent({
     };
     const isEtiquetaExistente = (etiqueta) => {
       return seed.some((item) => {
-        console.log(etiqueta, item.values);
         return String(item.values[0]) === String(etiqueta);
       });
+    };
+    const handleMge = async (req) => {
+      try {
+        const res = await mge(req);
+        if (res.status == 1) {
+          notifySuccess("Incluido!");
+          return res;
+        } else {
+          notifyError(res.statusMessage);
+          return res;
+        }
+      } catch (error) {
+        notifyError(error.message);
+        return res;
+      }
     };
     return {
       form,

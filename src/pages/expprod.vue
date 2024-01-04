@@ -174,7 +174,6 @@ export default defineComponent({
           if (
             arr.length == 5 &&
             arr[0].length == 11 &&
-            arr[1].length == 4 &&
             arr[2].length == 6 &&
             arr[3].length == 2 &&
             arr[4].length == 10

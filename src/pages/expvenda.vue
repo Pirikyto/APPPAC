@@ -1,13 +1,6 @@
 <template>
   <q-page padding>
-    <q-btn
-      round
-      dense
-      flat
-      icon="tune"
-      @click="handleImpressao"
-      type="submit"
-    />
+    <!--<q-btn round dense flat icon="tune" @click="isEtiquetaFila" type="submit" />-->
     <q-form class="row justify-center" @submit.prevent="handleConferencia">
       <p class="col-12 text-h5 text-center">Fila de Conferencia</p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
@@ -79,6 +72,7 @@
             rounded
             ref="selectOption"
             Recebimento
+            :disable="loadingEnv"
             @click="handleTune(true)"
           />
         </div>
@@ -147,9 +141,9 @@
             >
               <template v-slot:append>
                 <q-icon
-                  v-if="form.notafiscal !== ''"
+                  v-if="form.volume !== ''"
                   name="close"
-                  @click="form.notafiscal = ''"
+                  @click="form.volume = ''"
                   class="cursor-pointer"
                 />
               </template>
@@ -221,6 +215,7 @@ export default defineComponent({
     const json = require("../json/request.json");
     const disableNF = ref(false);
     const disableEtiqueta = ref(true);
+    const loadingEnv = ref(true);
     const parameter = [];
     const parameters = [];
     const records = [];
@@ -268,7 +263,6 @@ export default defineComponent({
               req.requestBody.params = params;
               const conf = await handleMgecom(req);
               form.value.numConf = conf.responseBody.numConf;
-              console.log(form.value.numConf);
               notifySuccess("Incluido!");
               disableNF.value = true;
               disableEtiqueta.value = false;
@@ -285,7 +279,6 @@ export default defineComponent({
             req.requestBody.params = params;
             const conf = await handleMgecom(req);
             form.value.numConf = conf.responseBody.numConf;
-            console.log(form.value.numConf);
             disableNF.value = true;
             disableEtiqueta.value = false;
           }
@@ -298,16 +291,14 @@ export default defineComponent({
           req.requestBody.criteria.parameters = parameters;
           const ress = await handleMge(req);
           if (ress.status == 1) {
-            ress.responseBody.result.forEach(([chave], index) => {
+            ress.responseBody.result.forEach((chave, index) => {
               itens.unshift({
                 values: {
-                  0: chave,
+                  0: chave[0],
+                  1: chave[1],
                 },
               });
-              // Ou atribua o valor que você quiser aqui
             });
-
-            console.log(itens);
           } else {
             notifyError(ress.statusMessage);
             console.log(ress);
@@ -318,8 +309,17 @@ export default defineComponent({
         }
       }
     };
-
+    const teste = async () => {
+      const req = json.conferenciavendaitensnota;
+      parameters.unshift({
+        type: "N",
+        value: form.value.notafiscal,
+      });
+      req.requestBody.criteria.parameters = parameters;
+      const ress = await handleMge(req);
+    };
     const handleConferencia = async () => {
+      loadingEnv.value = true;
       const req = json.etiquetaConferenciaVenda;
       req.requestBody.records = seed.reverse();
       const res = await handleMge(req);
@@ -341,14 +341,13 @@ export default defineComponent({
       } else {
         loading.value = true;
         let arr = form.value.etiqueta.split("*");
-        console.log(!isProdutoExistente(arr[1]));
         if (!isEtiquetaExistente(form.value.etiqueta)) {
           if (
             arr.length == 5 &&
-            arr[0].length == 11 &&
+            //arr[0].length == 11 &&
             arr[2].length == 6 &&
-            arr[3].length == 2 &&
-            arr[4].length == 10
+            arr[3].length == 2 /*&&
+            arr[4].length == 10*/
           ) {
             if (isProdutoExistente(arr[1])) {
               seed.unshift({
@@ -370,7 +369,6 @@ export default defineComponent({
                 }
                 if (parseInt(arr[2]) / 100 > 1) {
                   peso.value = peso.value + parseInt(arr[2]) / 100;
-                  //console.log(peso.value);
                 }
                 const index = indexCount.value,
                   row = originalRows[rowCount.value];
@@ -383,6 +381,7 @@ export default defineComponent({
               }, 500);
               form.value.etiqueta = "";
               input.value.focus();
+              loadingEnv.value = false;
             } else {
               var audio = new Audio("../media/error-1.mp3");
               audio.addEventListener("canplaythrough", function () {
@@ -425,10 +424,7 @@ export default defineComponent({
         }
         let arr = seed[val].values[0].split("*");
         if (parseInt(arr[2]) / 100 > 1) {
-          //console.log(peso.value);
           peso.value = peso.value - parseInt(arr[2]) / 100;
-          //console.log(parseInt(arr[2]) / 100);
-          //console.log(peso.value);
         }
         seed.splice(val, 1);
         rows.value.splice(val, 1);
@@ -440,7 +436,6 @@ export default defineComponent({
 
     const isEtiquetaExistente = (etiqueta) => {
       return seed.some((item) => {
-        //console.log(etiqueta, item.values);
         return String(item.values[2]) === String(etiqueta);
       });
     };
@@ -453,38 +448,46 @@ export default defineComponent({
     };
 
     const isEtiquetaFila = async (etiqueta) => {
-      //return
       const dados = etiqueta.map((item) => {
         return item.values[2].split("*");
       });
       const somaPorChave = {};
 
-      // Percorre os dados
       dados.forEach((item) => {
         const codBarra = item[1];
         const controle = item[4];
         const chave = `${codBarra}_${controle}`;
-        // Verifica se a chave já existe no objeto
+
         if (somaPorChave[chave] == undefined) {
           somaPorChave[chave] = { codBarra, controle, qtdConf: 0 };
         }
-        // Soma o valor na posição 2
+
         somaPorChave[chave].qtdConf += parseInt(item[2]) / 100;
       });
       for (const chave in somaPorChave) {
         const obj = somaPorChave[chave];
+
+        const objetoEncontrado = itens.find(
+          (item) => item.values["0"] === obj.codBarra
+        );
+
+        const valorPosicao1 = objetoEncontrado
+          ? objetoEncontrado.values["1"]
+          : undefined;
+
         const req = json.salvarItemConferido;
         req.requestBody.params = {
           numConf: form.value.numConf,
           nuNota: form.value.notafiscal,
           codBarra: obj.codBarra,
           controle: "",
-          qtdConf: obj.qtdConf,
+          qtdConf: obj.qtdConf / valorPosicao1,
           substituirProduto: true,
           volume: "",
           exigeIdentificadores: "N",
           codUMA: "",
         };
+        console.log(req);
         await handleMgecom(req);
       }
       const req = json.salvarVolumeSimplificado;
@@ -512,7 +515,6 @@ export default defineComponent({
     const handleImpressao = async () => {
       const chave = json.impressao;
       const nota = await handleMge(chave);
-      console.log(nota);
     };
     const handleMgecom = async (req) => {
       try {
@@ -545,7 +547,7 @@ export default defineComponent({
         return res;
       }
     };
-    
+
     const handleTune = async (tune) => {
       if (seed == "") {
         notifyError("Sem Produtos");
@@ -560,10 +562,12 @@ export default defineComponent({
       handleNunota,
       handleTune,
       handleImpressao,
+      teste,
       form,
       imageDialogVisible,
       disableNF,
       disableEtiqueta,
+      loadingEnv,
       peso,
       columns,
       rows,

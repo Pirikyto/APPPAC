@@ -252,7 +252,7 @@
       "entityName": "ItemNota",
       "standAlone": true,
       "orderByExpression": "SEQUENCIA",
-      "fields": ["CODPROD"],
+      "fields": ["CODPROD", "Produto.PESOLIQ"],
       "criteria": {
         "expression": "(this.SEQUENCIA > 0) AND  (NUNOTA = ?) ",
         "parameters": []
@@ -403,6 +403,39 @@
       }
     }
   },
+  "etiquetasproducao": {
+    "serviceName": "DatasetSP.loadRecords",
+    "requestBody": {
+      "dataSetID": "00S",
+      "entityName": "AD_ITECONFPROD",
+      "fields": [
+        "ID",
+        "SEQUENCIA",
+        "ETIQUETA",
+        "CODCAIXA",
+        "CODPROD",
+        "Produto.DESCRPROD",
+        "QTDPROD",
+        "QTDCAIXA",
+        "LOTE",
+        "APONTAMENTO",
+        "DHLEITURA"
+      ],
+      "tryJoinedFields": true,
+      "orderByExpression": "ID",
+      "criteria": {
+        "expression": " (ID > ? )",
+        "parameters": [
+          {
+            "type": "N",
+            "value": "151"
+          }
+        ]
+      },
+      "ignoreListenerMethods": ""
+    }
+  },
+
   "cortar": {
     "serviceName": "ConferenciaSP.cortar",
     "requestBody": {
@@ -502,7 +535,7 @@
           "pendingPrinter": [
             {
               "printerUri": {
-                "$": "localhost:9091/Datamax M-4206 Mark II (from PC1210)"
+                "$": "192.168.111.98:9091/ETI_EXPED"
               },
               "originalPrinterName": {
                 "$": "PRN_ETIQUETAS_PORTAL"
