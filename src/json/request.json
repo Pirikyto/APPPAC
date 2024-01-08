@@ -252,7 +252,7 @@
       "entityName": "ItemNota",
       "standAlone": true,
       "orderByExpression": "SEQUENCIA",
-      "fields": ["CODPROD", "Produto.PESOLIQ"],
+      "fields": ["CODPROD", "Produto.PESOLIQ", "Produto.USOPROD"],
       "criteria": {
         "expression": "(this.SEQUENCIA > 0) AND  (NUNOTA = ?) ",
         "parameters": []

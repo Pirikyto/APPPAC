@@ -56,6 +56,18 @@
         padding="lg"
         stack
         glossy
+        @click="handleLeitura"
+      >
+        <q-icon name="check" size="xl" />
+        <div><font size="1">Leitura</font></div>
+      </q-btn>
+      <q-btn
+        class="btn-fixed-width"
+        color="blue"
+        type="submit"
+        padding="lg"
+        stack
+        glossy
       >
         <q-icon name="add_shopping_cart" size="xl" />
         <div><font size="1">Catalogo</font></div>
@@ -105,6 +117,9 @@ export default defineComponent({
     const handleFilaconf = async () => {
       router.push({ name: "ven" });
     };
+    const handleLeitura = async () => {
+      router.push({ name: "lei" });
+    };
 
     return {
       handleExped,
@@ -113,6 +128,7 @@ export default defineComponent({
       handleReceb,
       handleIndica,
       handleFilaconf,
+      handleLeitura,
     };
   },
 });

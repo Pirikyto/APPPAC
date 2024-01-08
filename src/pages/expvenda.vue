@@ -290,15 +290,26 @@ export default defineComponent({
           });
           req.requestBody.criteria.parameters = parameters;
           const ress = await handleMge(req);
+          console.log(ress);
           if (ress.status == 1) {
             ress.responseBody.result.forEach((chave, index) => {
-              itens.unshift({
-                values: {
-                  0: chave[0],
-                  1: chave[1],
-                },
-              });
+              if (chave[2] == "V") {
+                itens.unshift({
+                  values: {
+                    0: chave[0],
+                    1: chave[1],
+                  },
+                });
+              } else {
+                itens.unshift({
+                  values: {
+                    0: chave[0],
+                    1: 1,
+                  },
+                });
+              }
             });
+            console.log(itens);
           } else {
             notifyError(ress.statusMessage);
             console.log(ress);
@@ -309,15 +320,7 @@ export default defineComponent({
         }
       }
     };
-    const teste = async () => {
-      const req = json.conferenciavendaitensnota;
-      parameters.unshift({
-        type: "N",
-        value: form.value.notafiscal,
-      });
-      req.requestBody.criteria.parameters = parameters;
-      const ress = await handleMge(req);
-    };
+
     const handleConferencia = async () => {
       loadingEnv.value = true;
       const req = json.etiquetaConferenciaVenda;
@@ -456,8 +459,8 @@ export default defineComponent({
       dados.forEach((item) => {
         const codBarra = item[1];
         const controle = item[4];
-        const chave = `${codBarra}_${controle}`;
-
+        //const chave = `${codBarra}_${controle}`;
+        const chave = `${codBarra}`;
         if (somaPorChave[chave] == undefined) {
           somaPorChave[chave] = { codBarra, controle, qtdConf: 0 };
         }
@@ -562,7 +565,6 @@ export default defineComponent({
       handleNunota,
       handleTune,
       handleImpressao,
-      teste,
       form,
       imageDialogVisible,
       disableNF,

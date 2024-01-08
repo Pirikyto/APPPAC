@@ -58,6 +58,11 @@ const routes = [
         component: () => import("src/pages/expvenda.vue"),
       },
       {
+        path: "lei",
+        name: "lei",
+        component: () => import("src/pages/expleit.vue"),
+      },
+      {
         path: "cat",
         name: "cat",
         component: () => import("src/pages/ErrorNotFound.vue"),
