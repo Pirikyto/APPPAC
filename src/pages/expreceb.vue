@@ -269,6 +269,16 @@
         </q-card>
       </div>
     </q-dialog>
+    <q-dialog v-model="imageDialogVisibl">
+      <div>
+        <q-card class="q-pa-md">
+          <q-card-actions align="center">
+            <q-btn color="primary" label="Continuar" @click="handleDelete()" />
+            <q-btn color="primary" label="Finalizar" @click="handleReload()" />
+          </q-card-actions>
+        </q-card>
+      </div>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -315,7 +325,7 @@ export default defineComponent({
       min: 0,
       max: 0,
     });
-    const originalRows = [];
+    const originalRows = []; /*ok */
     const form = ref({
       notafiscal: "",
       datefab: "",
@@ -326,6 +336,7 @@ export default defineComponent({
     const typePeso = ref("number");
     const options = ref([]);
     const imageDialogVisible = ref(false);
+    const imageDialogVisibl = ref(false);
     const router = useRouter();
     const disableNF = ref(false);
     const disablePRO = ref(true);
@@ -334,18 +345,18 @@ export default defineComponent({
     const disableQTD = ref(true);
     const loadingEnv = ref(true);
     const loading = ref(false);
-    const rowCount = ref(0);
-    const indexCount = ref(0);
+    const rowCount = ref(0); /*ok */
+    const indexCount = ref(0); /*ok */
     const model = ref("");
-    const rows = ref([...originalRows]);
+    const rows = ref([...originalRows]); /*ok */
     const { notifyError, notifySuccess } = useNotify();
     const { mge } = useApi();
     const json = require("../json/request.json");
     const parameter = [];
     const records = [];
-    const seed = [];
+    const seed = []; /*ok */
     const input = ref(null);
-    let peso = ref(0);
+    let peso = ref(0); /*ok */
 
     var CODINS = "";
     var CODDADOSET = "";
@@ -642,12 +653,9 @@ export default defineComponent({
       try {
         const res = await mge(req);
         if (res.status == 1) {
-          const imp = await handleImpressao();
-          notifySuccess("Impresso!");
-          setTimeout(() => {
-            // router.push({ name: "rec" });
-            // window.location.reload(false);
-          }, 10000);
+          imageDialogVisibl.value = true;
+          //const imp = await handleImpressao();
+          //notifySuccess("Impresso!");
         } else {
           notifyError(res.statusMessage);
           console.log(res);
@@ -691,14 +699,14 @@ export default defineComponent({
     const obterParteString = (string, inicio, fim) => {
       console.log(string);
       string = string.replace(/[^\d.]/g, "0");
-      if (inicio === 0 && fim === 0) {
+      if (inicio == 0 && fim == 0) {
         return string;
       }
 
       // Certifique-se de que as posições são válidas
       if (inicio >= 0 && fim >= inicio && fim <= string.length) {
         const parteDaString = string.substring(inicio, fim);
-        parteDaString = parteDaString.replace(".", ",");
+        //parteDaString = parteDaString.replace(".", ",");
         // Tente converter a parte da string em número
         const numero = parseFloat(parteDaString);
 
@@ -729,7 +737,18 @@ export default defineComponent({
         return form.value.notafiscal;
       }
     };
-
+    const handleDelete = async () => {
+      loading.value = true;
+      seed.length = 0;
+      originalRows.length = 0;
+      rowCount.value = 0;
+      indexCount.value = 0;
+      rows.value = [...originalRows];
+      peso.value = 0;
+      loading.value = false;
+      imageDialogVisibl.value = false;
+      loadingEnv.value = true;
+    };
     const handleImpressao = async () => {
       const req = json.executeScript;
       const nota = await handleMge(req);
@@ -760,6 +779,12 @@ export default defineComponent({
         return res;
       }
     };
+    const handleReload = async () => {
+      setTimeout(() => {
+        router.push({ name: "rec" });
+        window.location.reload(false);
+      }, 5000);
+    };
 
     return {
       form,
@@ -780,6 +805,7 @@ export default defineComponent({
       peso,
       range,
       imageDialogVisible,
+      imageDialogVisibl,
       handleNunota,
       handleSelectChange,
       handleFabricacao,
@@ -788,7 +814,9 @@ export default defineComponent({
       handleEtiqueta,
       handleExclu,
       handleTune,
+      handleDelete,
       handleImpressao,
+      handleReload,
     };
   },
 });

@@ -50,6 +50,7 @@ export default function useApi() {
         res = response.data;
       })
       .catch((error) => {
+        console.log(error);
         res = error.data;
         console.log(error.data);
       })

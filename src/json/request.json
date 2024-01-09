@@ -137,7 +137,27 @@
         },
         "entity": {
           "fieldset": {
-            "list": "NUNOTA"
+            "list": "NUNOTA,CODPARC"
+          }
+        }
+      }
+    }
+  },
+  "consultaParceiro": {
+    "serviceName": "CRUDServiceProvider.loadRecords",
+    "requestBody": {
+      "dataSet": {
+        "rootEntity": "Parceiro",
+        "includePresentationFields": "N",
+        "offsetPage": "0",
+        "criteria": {
+          "expression": {
+            "$": "this.CODPARC = 648 "
+          }
+        },
+        "entity": {
+          "fieldset": {
+            "list": "CODPARC,NOMEPARC,FORNECEDOR,CLIENTE,CODCID,CLIENTE,CLASSIFICMS"
           }
         }
       }

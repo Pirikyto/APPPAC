@@ -35,11 +35,13 @@
     </q-form>
     <div class="q-pa-md">
       <p class="col-12 text-h5 text-center">Soma por Chave:</p>
-      <div v-for="(item, chave) in somaPorChave" :key="chave">
-        <p>
-          {{ chave }}: {{ item.codBarra }}, {{ item.controle }},
-          {{ item.qtdConf }}
-        </p>
+      <div class="row" v-for="(item, chave) in somaPorChave" :key="chave">
+        <div class="col text-h4 text">
+          <p>{{ item.codBarra }}</p>
+        </div>
+        <div class="col text-h4 text">
+          <p>{{ item.qtdConf }}</p>
+        </div>
       </div>
     </div>
     <div id="q-app" style="min-height: 100vh">
@@ -149,7 +151,7 @@ export default defineComponent({
         loading.value = true;
 
         let arr = form.value.etiqueta.split("*");
-        if (!isEtiquetaExistente(form.value.etiqueta)) {
+        if (1 == 1 /*!isEtiquetaExistente(form.value.etiqueta)*/) {
           if (
             arr.length == 5 &&
             // arr[0].length == 11 &&
@@ -200,24 +202,29 @@ export default defineComponent({
           notifyError("Etiqueta em Duplicidade");
         }
         const dados = seed.map((item) => {
-          console.log(item.values);
+          //console.log(item.values);
           return item.values[0].split("*");
         });
+        console.log(dados);
+        console.log(somaPorChave.value);
         somaPorChave.value = {};
+        console.log(somaPorChave.value);
         dados.forEach((item) => {
           const codBarra = item[1];
           const controle = item[4];
           //const chave = `${codBarra}_${controle}`;
           const chave = `${codBarra}`;
-          if (somaPorChave[chave] == undefined) {
-            somaPorChave[chave] = { codBarra, qtdConf: 0 };
+          if (somaPorChave.value[chave] == undefined) {
+            somaPorChave.value[chave] = { codBarra, qtdConf: 0 };
           }
-          somaPorChave[chave].qtdConf += parseInt(item[2]) / 100;
+          somaPorChave.value[chave].qtdConf += parseInt(item[2]) / 100;
         });
-        console.log("Soma por chave:", somaPorChave);
+        console.log(somaPorChave);
+        /* console.log("Soma por chave:", somaPorChave);
         dados.length = 0;
         console.log("seed após limpeza:", seed);
         console.log("dados após limpeza:", dados);
+        loading.value = false;*/
       }
     };
 
