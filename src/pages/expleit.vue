@@ -37,8 +37,10 @@
       <q-card class="q-pa-md column justify-center content-center">
         <div class="row" v-for="(item, chave) in somaPorChave" :key="chave">
           <q-card-actions align="center">
-            {{ item.codBarra }} : {{ formatarQuantidade(item.qtdConf) }} :
-            {{ item.count }}
+            <b
+              >{{ item.codBarra }} - {{ formatarQuantidade(item.qtdConf) }} -
+              {{ item.count }}</b
+            >
           </q-card-actions>
         </div>
       </q-card>
@@ -204,10 +206,8 @@ export default defineComponent({
           //console.log(item.values);
           return item.values[0].split("*");
         });
-        console.log(dados);
-        console.log(somaPorChave.value);
+
         somaPorChave.value = {};
-        console.log(somaPorChave.value);
         dados.forEach((item) => {
           const codBarra = item[1];
           const controle = item[4];
@@ -219,12 +219,6 @@ export default defineComponent({
           somaPorChave.value[chave].qtdConf += parseInt(item[2]) / 100;
           somaPorChave.value[chave].count += 1;
         });
-        console.log(somaPorChave);
-        /* console.log("Soma por chave:", somaPorChave);
-        dados.length = 0;
-        console.log("seed após limpeza:", seed);
-        console.log("dados após limpeza:", dados);
-        loading.value = false;*/
       }
     };
 
@@ -253,6 +247,24 @@ export default defineComponent({
       }, 500);
       input.value.focus();
       form.value.etiqueta = "";
+      const arr = seed;
+      console.log(arr);
+      const dados = seed.map((item) => {
+        return item.values[0].split("*");
+      });
+      console.log(dados);
+      somaPorChave.value = {};
+      dados.forEach((item) => {
+        const codBarra = item[1];
+        const controle = item[4];
+        //const chave = `${codBarra}_${controle}`;
+        const chave = `${codBarra}`;
+        if (somaPorChave.value[chave] == undefined) {
+          somaPorChave.value[chave] = { codBarra, qtdConf: 0, count: 0 };
+        }
+        somaPorChave.value[chave].qtdConf += parseInt(item[2]) / 100;
+        somaPorChave.value[chave].count += 1;
+      });
     };
     const formatarQuantidade = (qtdConf) => {
       // Lógica para formatar a quantidade, por exemplo, adicionar uma máscara

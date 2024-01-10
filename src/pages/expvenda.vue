@@ -78,7 +78,18 @@
         </div>
       </div>
     </q-form>
-    <div id="q-app" style="min-height: 100vh">
+    <div class="q-pa-md">
+      <q-card class="q-pa-md column justify-center content-center">
+        <div class="row" v-for="(item, chave) in somaPorChave" :key="chave">
+          <q-card-actions align="center">
+            Pro.: {{ item.codBarra }} - Qtd.:
+            {{ formatarQuantidade(item.qtdConf) }} - Etq.:
+            {{ item.count }}
+          </q-card-actions>
+        </div>
+      </q-card>
+    </div>
+    <div id="q-app">
       <div class="q-pa-md">
         <q-table
           flat
@@ -97,8 +108,8 @@
             <q-tr>
               <q-td></q-td>
               <q-td>#</q-td>
-              <q-td>Etiquetas: {{ rowCount }}</q-td>
-              <q-td>Peso : {{ peso }}</q-td>
+              <q-td>Qtd.</q-td>
+              <q-td>Etiqueta </q-td>
             </q-tr>
           </template>
 
@@ -228,6 +239,7 @@ export default defineComponent({
     const indexCount = ref(0);
     const rows = ref([...originalRows]);
     const input = ref(null);
+    const somaPorChave = ref({});
     let params = [];
     let peso = ref(0);
 
@@ -412,6 +424,23 @@ export default defineComponent({
           form.value.etiqueta = "";
           notifyError("Etiqueta em Duplicidade");
         }
+        const dados = seed.map((item) => {
+          console.log(item.values);
+          return item.values[2].split("*");
+        });
+
+        somaPorChave.value = {};
+        dados.forEach((item) => {
+          const codBarra = item[1];
+          const controle = item[4];
+          //const chave = `${codBarra}_${controle}`;
+          const chave = `${codBarra}`;
+          if (somaPorChave.value[chave] == undefined) {
+            somaPorChave.value[chave] = { codBarra, qtdConf: 0, count: 0 };
+          }
+          somaPorChave.value[chave].qtdConf += parseInt(item[2]) / 100;
+          somaPorChave.value[chave].count += 1;
+        });
       }
     };
 
@@ -558,6 +587,11 @@ export default defineComponent({
         imageDialogVisible.value = tune;
       }
     };
+    const formatarQuantidade = (qtdConf) => {
+      // Lógica para formatar a quantidade, por exemplo, adicionar uma máscara
+      // Aqui, estou apenas arredondando para 2 casas decimais como exemplo
+      return qtdConf.toFixed(2);
+    };
     return {
       handleLeitura,
       handleConferencia,
@@ -565,6 +599,7 @@ export default defineComponent({
       handleNunota,
       handleTune,
       handleImpressao,
+      formatarQuantidade,
       form,
       imageDialogVisible,
       disableNF,
@@ -578,6 +613,7 @@ export default defineComponent({
       rowCount,
       input,
       selected: ref([]),
+      somaPorChave,
     };
   },
 });
