@@ -175,7 +175,7 @@
         />
       </div>
     </q-form>
-    <div id="q-app" style="min-height: 100vh">
+    <div id="q-app">
       <div class="q-pa-md">
         <q-table
           flat
@@ -270,14 +270,29 @@
       </div>
     </q-dialog>
     <q-dialog v-model="imageDialogVisibl">
-      <div>
-        <q-card class="q-pa-md">
-          <q-card-actions align="center">
-            <q-btn color="primary" label="Continuar" @click="handleDelete()" />
-            <q-btn color="primary" label="Finalizar" @click="handleReload()" />
-          </q-card-actions>
-        </q-card>
-      </div>
+      <q-card
+        class="q-pa-md column justify-center content-center"
+        style="height: 100%; width: 100%"
+      >
+        <q-card-actions align="center">
+          <q-btn
+            size="xl"
+            padding="lg"
+            color="primary"
+            label="Continuar"
+            @click="handleDelete()"
+          />
+        </q-card-actions>
+        <q-card-actions align="center">
+          <q-btn
+            size="xl"
+            padding="lg"
+            color="primary"
+            label="Finalizar"
+            @click="handleReload()"
+          />
+        </q-card-actions>
+      </q-card>
     </q-dialog>
   </q-page>
 </template>
@@ -687,6 +702,7 @@ export default defineComponent({
       form.value.etiqueta = "";
     };
     const handleTune = async (tune) => {
+      // imageDialogVisibl.value = true;
       if (range.value.min > 0 || range.value.max > 0) {
         typePeso.value = "text";
         imageDialogVisible.value = tune;
@@ -747,7 +763,7 @@ export default defineComponent({
       peso.value = 0;
       loading.value = false;
       imageDialogVisibl.value = false;
-      loadingEnv.value = true;
+      loadingEnv.value = false;
     };
     const handleImpressao = async () => {
       const req = json.executeScript;

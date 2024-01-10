@@ -34,17 +34,16 @@
       </div>
     </q-form>
     <div class="q-pa-md">
-      <p class="col-12 text-h5 text-center">Soma por Chave:</p>
-      <div class="row" v-for="(item, chave) in somaPorChave" :key="chave">
-        <div class="col text-h4 text">
-          <p>{{ item.codBarra }}</p>
+      <q-card class="q-pa-md column justify-center content-center">
+        <div class="row" v-for="(item, chave) in somaPorChave" :key="chave">
+          <q-card-actions align="center">
+            {{ item.codBarra }} : {{ formatarQuantidade(item.qtdConf) }} :
+            {{ item.count }}
+          </q-card-actions>
         </div>
-        <div class="col text-h4 text">
-          <p>{{ item.qtdConf }}</p>
-        </div>
-      </div>
+      </q-card>
     </div>
-    <div id="q-app" style="min-height: 100vh">
+    <div id="q-app">
       <div class="q-pa-md">
         <q-table
           flat
@@ -62,8 +61,8 @@
             <q-tr>
               <q-td></q-td>
               <q-td>#</q-td>
-              <q-td>Etiquetas: {{ rowCount }}</q-td>
-              <q-td>Peso : {{ peso }}</q-td>
+              <q-td>Etiquetas</q-td>
+              <q-td>Peso </q-td>
             </q-tr>
           </template>
 
@@ -215,9 +214,10 @@ export default defineComponent({
           //const chave = `${codBarra}_${controle}`;
           const chave = `${codBarra}`;
           if (somaPorChave.value[chave] == undefined) {
-            somaPorChave.value[chave] = { codBarra, qtdConf: 0 };
+            somaPorChave.value[chave] = { codBarra, qtdConf: 0, count: 0 };
           }
           somaPorChave.value[chave].qtdConf += parseInt(item[2]) / 100;
+          somaPorChave.value[chave].count += 1;
         });
         console.log(somaPorChave);
         /* console.log("Soma por chave:", somaPorChave);
@@ -254,10 +254,16 @@ export default defineComponent({
       input.value.focus();
       form.value.etiqueta = "";
     };
+    const formatarQuantidade = (qtdConf) => {
+      // Lógica para formatar a quantidade, por exemplo, adicionar uma máscara
+      // Aqui, estou apenas arredondando para 2 casas decimais como exemplo
+      return qtdConf.toFixed(2);
+    };
     return {
       form,
       handleLeitura,
       handleExclu,
+      formatarQuantidade,
       somaPorChave,
       peso,
       columns,
